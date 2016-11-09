@@ -1,0 +1,14 @@
+[color]
+diff=auto
+status=auto
+[core]
+editor=vim
+quotepath=false
+[alias]
+st=status
+ci=commit
+lg=log -p
+lol=log --graph --decorate --pretty=oneline --abbrev-commit --all
+[user]
+name=Robin Shi
+email=robinshi@outlook.com
