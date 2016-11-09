@@ -29,10 +29,12 @@ set ignorecase
 set incsearch
 
 set autoindent
-set shiftwidth=4
 set smartindent
 set smarttab
-set softtabstop=4
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set expandtab
 set backspace=indent,eol,start
 
 " statusline
@@ -72,7 +74,12 @@ nmap <silent> <LEADER>ev :e $MYVIMRC<CR>
 nmap <silent> <LEADER>sv :so $MYVIMRC<CR>
 
 " plugins
+" NERDTree
 nmap <C-e> :NERDTreeToggle<CR>
 let NERDTreeIgnore=["\.git", "\.exe"]
 let NERDTreeDirArrows=0
 let NERDTreeQuitOnOpen=1
+" NERDCommenter
+" <leader>c<space>
+" <leader>cc
+" <leader>cu
