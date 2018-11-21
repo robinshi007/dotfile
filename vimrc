@@ -18,9 +18,6 @@ Plug 'easymotion/vim-easymotion'
 " files
 Plug 'evanmiller/nginx-vim-syntax'
 
-" language
-Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
-
 call plug#end()
 syntax enable
 filetype indent on
