@@ -27,6 +27,7 @@ alias ..='cd ..'
 alias ...='cd ...'
 alias md='mkdir -p'
 alias cls='clear'
+alias python='python3'
 
 # export
 export LC_ALL="en_US.utf-8"
@@ -103,12 +104,27 @@ mkcd()
     cd "$1"
 }
 
-# custom
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+
+# PATH
+if [ -d "$HOME/bin" ]; then
+    PATH="$HOME/bin:$PATH"
 fi
+if [ -d "$HOME/.cargo/bin" ]; then
+    #export PATH=~/.cargo/bin:$PATH
+    PATH="$HOME/.cargo/bin:$PATH"
+fi
+if [ -d "$HOME/projects/go" ]; then
+    export GOPATH=$HOME/projects/go
+    export PATH=/usr/local/go/bin:$GOPATH/bin:$PATH
+fi
+
 
 # 3rd party init
 # gvm init
 [[ -s "/home/git/.gvm/scripts/gvm" ]] && source "/home/git/.gvm/scripts/gvm"
 
+
+# custom
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi

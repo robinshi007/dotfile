@@ -7,13 +7,20 @@
 set nocompatible
 
 call plug#begin($HOME.'/.vim/plugged')
-Plug 'scrooloose/nerdtree'
-Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdcommenter'
 Plug 'Raimondi/delimitMate'
 Plug 'altercation/vim-colors-solarized'
+Plug 'easymotion/vim-easymotion'
+
+" files
 Plug 'evanmiller/nginx-vim-syntax'
+
+" language
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+
 call plug#end()
 syntax enable
 filetype indent on
@@ -74,12 +81,29 @@ nmap <silent> <LEADER>ev :e $MYVIMRC<CR>
 nmap <silent> <LEADER>sv :so $MYVIMRC<CR>
 
 " plugins
-" NERDTree
+" === NERDTree ===
 nmap <C-e> :NERDTreeToggle<CR>
 let NERDTreeIgnore=["\.git", "\.exe"]
 let NERDTreeDirArrows=0
-let NERDTreeQuitOnOpen=1
-" NERDCommenter
+"let NERDTreeQuitOnOpen=1
+" === NERDCommenter ===
 " <leader>c<space>
+nmap <silent> gc <LEADER>c<SPACE>
+vmap <silent> gc <LEADER>c<SPACE>
 " <leader>cc
 " <leader>cu
+" == easymotion ===
+"<leader>f{char} to move to {char}
+map  <Leader>f <Plug>(easymotion-bd-f)
+nmap <Leader>f <Plug>(easymotion-overwin-f)
+"
+"" s{char}{char} to move to {char}{char}
+map s <Plug>(easymotion-overwin-f2)
+
+" Move to line
+map <Leader>L <Plug>(easymotion-bd-jk)
+nmap <Leader>L <Plug>(easymotion-overwin-line)
+"
+" " Move to word
+map  <Leader>w <Plug>(easymotion-bd-w)
+nmap <Leader>w <Plug>(easymotion-overwin-w)
