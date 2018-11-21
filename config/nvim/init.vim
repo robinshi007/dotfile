@@ -23,9 +23,12 @@ Plug 'chr4/nginx.vim'
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'rust-lang/rust.vim'
 
-Plug 'Shougo/deoplete.nvim',  { 'do': ':UpdateRemotePlugins '}
+" snippets
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
+
+" complete
+Plug 'Shougo/deoplete.nvim',  { 'do': ':UpdateRemotePlugins '}
 Plug 'zchee/deoplete-go',  { 'do': 'make'}
 Plug 'zchee/deoplete-jedi'
 Plug 'sebastianmarkow/deoplete-rust'
@@ -42,4 +45,5 @@ source ~/.config/nvim/config/functions.vim
 source ~/.config/nvim/config/keymappings.vim
 source ~/.config/nvim/config/plugins.vim
 
+" === local config ===
 
