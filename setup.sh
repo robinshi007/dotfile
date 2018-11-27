@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # check path exist or mkdir for it
-[ -d vim/autoload ] ||         mkdir vim/autoload
+[ -d vim/autoload ] ||         mkdir -p vim/autoload
 [ -d config/nvim/autoload ] || mkdir config/nvim/autoload
 
 # download plug.vim to autoload path
@@ -23,7 +23,9 @@ FILES=(
 'vimrc'
 'vim'
 'gitconfig'
+'gitignore'
 'config'
+'tmux.conf'
 )
 
 # link dotfiles to $HOME
@@ -43,7 +45,7 @@ for i in ${FILES[@]}; do
       mv "$HOME/.$i" "$HOME/.$i.bak"
     fi
     echo "File linking: $HOME/.$i => $i"
-    ln -s $HOME/dotfiles/$i $HOME/.$i
+    ln -s $HOME/dotfile/$i $HOME/.$i
   fi
 done
 echo "=> end" 
