@@ -16,6 +16,8 @@ Plug 'easymotion/vim-easymotion'
 Plug 'altercation/vim-colors-solarized'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'cloudhead/neovim-fuzzy'
+Plug 'editorconfig/editorconfig-vim'
 
 " language
 Plug 'vim-syntastic/syntastic'
@@ -32,6 +34,10 @@ Plug 'Shougo/deoplete.nvim',  { 'do': ':UpdateRemotePlugins '}
 Plug 'zchee/deoplete-go',  { 'do': 'make'}
 Plug 'zchee/deoplete-jedi'
 Plug 'sebastianmarkow/deoplete-rust'
+
+" backup plugins
+"Plug 'airblade/vim-gitgutter'
+"Plug 'w0rp/ale'
 
 call plug#end()
 

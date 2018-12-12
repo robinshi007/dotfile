@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# setup exe
+# brew install tmux neovim python3 ag reattach-to-user-namespace
+# brew cask install iterm2
+
 # check path exist or mkdir for it
 [ -d vim/autoload ] ||         mkdir -p vim/autoload
 [ -d config/nvim/autoload ] || mkdir config/nvim/autoload
