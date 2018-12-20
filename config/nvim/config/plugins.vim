@@ -24,6 +24,8 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 " }}}
 " indentLine {{{
+let g:indentLine_enabled=1
+let g:indentLine_char = "⟩"
 let g:indentLine_color_term=239
 " }}}
 " Easymotion {{{
@@ -38,6 +40,9 @@ nmap <Leader>L <Plug>(easymotion-overwin-line)
 "  Move to word
 map  <Leader>w <Plug>(easymotion-bd-w)
 nmap <Leader>w <Plug>(easymotion-overwin-w)
+" }}}
+" Neovim-fuzzy {{{
+nnoremap <C-p> :FuzzyOpen<CR>
 " }}}
 " Airline {{{
 let g:airline#extensions#tabline#enabled=1

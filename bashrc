@@ -7,22 +7,28 @@ case $- in
 esac
 
 # opts
-HISTCONTROL=ignoreboth
+export HISTCONTROL=ignoreboth
 export HISTSIZE=1000
 export HISTFILESIZE=2000
+# append to the history file, don't overwrite it
 shopt -s histappend
+# check the window size after each command and, if necessary,
 shopt -s checkwinsize
+# case-insensitive globbing (used in pathname expansion)
 shopt -s nocaseglob
+# autocorrect typos in path names when using `cd`
 shopt -s cdspell
+# * `autocd`, e.g. `**/qux` will enter `./foo/bar/qux`
+# * recursive globbing, e.g. `echo **/*.txt`
 for option in autocd globstar; do
     shopt -s "$option" 2>/dev/null
 done
 
 # alias
 alias reload='source ~/.bashrc'
-alias ll='ls -lhF'
-alias la='ls -A'
-alias lla='ls -alhF'
+alias ll='ls -lh'
+alias la='ls -Ah'   # show hidden
+alias lla='ls -Alh'
 alias ..='cd ..'
 alias ...='cd ...'
 alias md='mkdir -p'
@@ -36,15 +42,24 @@ export EDITOR='vim'
 export OS_NAME=$(uname -s)
 
 # dircolor
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)"
-    alias ls='ls --color=auto'
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
+if [ $OS_NAME == "Linux" ];then
+  eval "$(dircolors -b ~/.dircolors)"
+  alias ls='ls --color=auto'
+elif [ $OS_NAME == "Darwin" ];then
+  eval "$(gdircolors -b ~/.dircolors)"
+  #alias ls='ls -FHG'
+  alias ls='ls -F --show-control-chars --color=auto'
 fi
-if [ -e /usr/share/terminfo/x/xterm-256color ] || [ -e /usr/share/terminfo/x/xterm+256color ];then
-    export TERM='xterm-256color'
+if [ $OS_NAME == "Linux" ] || [ $OS_NAME == "Darwin" ];then
+  alias grep='grep --color=auto'
+  alias fgrep='fgrep --color=auto'
+  alias egrep='egrep --color=auto'
+fi
+
+if [ -e /usr/share/terminfo/x/xterm+256color ] || [ $OS_NAME == 'Darwin' ]; then
+  export TERM='xterm-256color'
+else
+  export TERM='xterm-color'
 fi
 
 # prompt colors
@@ -67,6 +82,7 @@ style_user="\[${RESET}${ORANGE}\]"
 style_host="\[${RESET}${YELLOW}\]"
 style_path="\[${RESET}${GREEN}\]"
 style_char="\[${RESET}\]"
+style_branch="\[${CYAN}\]"
 style_smily="\[${GREEN}\]"
 style_smily_alt="\[${RED}\]"
 
@@ -78,13 +94,35 @@ function prompt_smily()
 	echo -ne "${style_smily_alt}${UNHAPPY_CHAR}"
     fi
 }
+# Git status.
+# Adapted from: https://github.com/cowboy/dotfiles/
+function prompt_git() {
+  local status output flags
+  status="$(git status 2>/dev/null)"
+  [[ $? != 0 ]] && return;
+  output="$(echo "$status" | awk '/# Initial commit/ {print "(init)"}')"
+  [[ "$output" ]] || output="$(echo "$status" | awk '/# On branch/ {print $4}')"
+  [[ "$output" ]] || output="$(git branch | perl -ne '/^\* (.*)/ && print $1')"
+  flags="$(
+  echo "$status" | awk 'BEGIN {r=""} \
+    /^# Changes to be committed:$/        {r=r "+"}\
+    /^# Changes not staged for commit:$/  {r=r "!"}\
+    /^# Untracked files:$/                {r=r "?"}\
+  END {print r}'
+  )"
+  if [[ "$flags" ]]; then
+    output="$output[$flags]"
+  fi
+  echo -ne " on ${style_branch}${output}"
+}
 function set_bash_prompt()
 {
-    local exit_status="$?"
+  local exit_status="$?"
     PS1=""
     PS1+="${style_reset}[${style_user}\u"
     PS1+="${style_char}: "
     PS1+="${style_path}\w${style_reset}]"
+    PS1+="${style_branch}$(prompt_git)${style_reset}" # Git details
     PS1+="$(prompt_smily $exit_status)"
     PS1+="${style_char}\$${style_reset}"
     PS2="> "
@@ -98,6 +136,7 @@ ips()
 {
     ifconfig | grep "inet " | awk '{ print $2}'
 }
+
 mkcd()
 {
     mkdir -p "$1"
@@ -109,22 +148,30 @@ mkcd()
 if [ -d "$HOME/bin" ]; then
     PATH="$HOME/bin:$PATH"
 fi
+if [ $OS_NAME == "Darwin" ];then
+  PATH="/usr/local/opt/coreutils/libexec/gnubin":$PATH
+fi
+if [[ -d "$HOME/.nvm" ]]; then
+  export NVM_DIR="$HOME/.nvm"
+fi
 if [ -d "$HOME/.cargo/bin" ]; then
     #export PATH=~/.cargo/bin:$PATH
     PATH="$HOME/.cargo/bin:$PATH"
 fi
-if [ -d "$HOME/projects/go" ]; then
+if [[ "$(command -v go)" ]] && [ -d "$HOME/projects/go" ]; then
     export GOPATH=$HOME/projects/go
-    export PATH=/usr/local/go/bin:$GOPATH/bin:$PATH
+    export PATH=$GOPATH/bin:$PATH
 fi
 
 
 # 3rd party init
+# nvm init
+[[ -s "$HOME/.nvm/nvm.sh" ]] && source "$HOME/.nvm/nvm.sh"  # This loads nvm
 # gvm init
-[[ -s "/home/git/.gvm/scripts/gvm" ]] && source "/home/git/.gvm/scripts/gvm"
+[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
 
 
-# custom
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+# local custom
+if [ -f ~/.bash_local ]; then
+    . ~/.bash_local
 fi

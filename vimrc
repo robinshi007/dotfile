@@ -16,7 +16,7 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'easymotion/vim-easymotion'
 
 " files
-Plug 'evanmiller/nginx-vim-syntax'
+Plug 'chr4/nginx.vim'
 
 call plug#end()
 syntax enable
@@ -82,7 +82,7 @@ nmap <silent> <LEADER>sv :so $MYVIMRC<CR>
 nmap <C-e> :NERDTreeToggle<CR>
 let NERDTreeIgnore=["\.git", "\.exe"]
 let NERDTreeDirArrows=0
-"let NERDTreeQuitOnOpen=1
+let NERDTreeQuitOnOpen=1
 " === NERDCommenter ===
 " <leader>c<space>
 nmap <silent> gc <LEADER>c<SPACE>
