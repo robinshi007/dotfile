@@ -11,6 +11,7 @@ set smartcase
 set ignorecase
 set incsearch
 set backspace=indent,eol,start
+set iskeyword+=-
 
 " === turn off swap files ===
 set noswapfile
@@ -26,8 +27,11 @@ set shiftwidth=2
 set softtabstop=2
 set expandtab
 set colorcolumn=80
-set nofoldenable
+
+" == fold ===
 set foldmethod=syntax
+set nofoldenable
+set foldlevel=99
 
 " === auto commands ===
 "

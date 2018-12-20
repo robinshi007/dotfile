@@ -19,6 +19,10 @@ vmap <silent> gc <LEADER>c<SPACE>
 " <leader>cc
 " <leader>cu
 " }}}
+" Vim Easy Align {{{
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+" }}}
 " indentLine {{{
 let g:indentLine_color_term=239
 " }}}

@@ -27,7 +27,7 @@ alias ..='cd ..'
 alias ...='cd ...'
 alias md='mkdir -p'
 alias cls='clear'
-alias python='python3'
+# alias python='python3'
 
 # export
 export LC_ALL="en_US.utf-8"

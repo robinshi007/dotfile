@@ -11,6 +11,7 @@ Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
 Plug 'Raimondi/delimitMate'
+Plug 'junegunn/vim-easy-align'
 Plug 'Yggdroot/indentLine'
 Plug 'easymotion/vim-easymotion'
 Plug 'altercation/vim-colors-solarized'
@@ -44,6 +45,6 @@ source ~/.config/nvim/config/base.vim
 source ~/.config/nvim/config/functions.vim
 source ~/.config/nvim/config/keymappings.vim
 source ~/.config/nvim/config/plugins.vim
+source ~/.config/nvim/config/autogroup.vim
 
-" === local config ===
 
