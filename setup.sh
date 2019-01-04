@@ -1,8 +1,13 @@
 #!/bin/bash
 
-# setup exe
+# ==== setup macos
 # brew install tmux neovim python3 ag reattach-to-user-namespace
 # brew cask install iterm2
+
+# === setup debian/ubuntu
+#curl -LO https://github.com/BurntSushi/ripgrep/releases/download/0.10.0/ripgrep_0.10.0_amd64.deb
+#sudo dpkg -i ripgrep_0.10.0_amd64.deb
+#sudo apt install fzy
 
 # check path exist or mkdir for it
 [ -d vim/autoload ] ||         mkdir -p vim/autoload

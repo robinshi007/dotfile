@@ -136,6 +136,9 @@ ips()
 {
     ifconfig | grep "inet " | awk '{ print $2}'
 }
+docker_ip(){
+  echo $(ip -4 addr show docker0 | grep -Po 'inet \K[\d.]+')
+}
 
 mkcd()
 {
