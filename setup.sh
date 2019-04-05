@@ -1,22 +1,7 @@
 #!/bin/bash
 
-# ==== setup macos
-# brew install tmux neovim python3 ag reattach-to-user-namespace
-# brew cask install iterm2
-
-# === setup debian/ubuntu
-#curl -LO https://github.com/BurntSushi/ripgrep/releases/download/0.10.0/ripgrep_0.10.0_amd64.deb
-#sudo dpkg -i ripgrep_0.10.0_amd64.deb
-#sudo apt install fzy
-
-# check path exist or mkdir for it
-[ -d vim/autoload ] ||         mkdir -p vim/autoload
-[ -d config/nvim/autoload ] || mkdir config/nvim/autoload
-
-# download plug.vim to autoload path
-cd vim/autoload/ &&          { curl -O https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim; cd -;}
-cd config/nvim/autoload/ &&  { curl -O https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim; cd -;}
-
+OS_NAME=$(uname -s)
+# === functions
 function is_dir_file(){
   if [[ -f $1 ]] || [[ -d $1 ]];then
     return 0
@@ -24,7 +9,37 @@ function is_dir_file(){
     return 1
   fi
 }
+function mkfolder(){
+  if [ ! -d $1 ];then
+    echo "=> mkfolder $1"
+    mkdir -p $1
+  fi
+}
 
+# === setup folders and files
+mkfolder "$HOME/bin"
+mkfolder "$HOME/tmp"
+[ -d vim/autoload ] ||         mkdir -p vim/autoload
+[ -d config/nvim/autoload ] || mkdir -p config/nvim/autoload
+# download plug.vim to autoload path
+PLUG_VIM_URL="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+[ -f vim/autoload/plug.vim ] || ( cd vim/autoload/ && { curl -O $PLUG_VIM_URL; cd -;} )
+[ -f config/nvim/autoload/plug.vim ] || ( cd config/nvim/autoload/ &&  { curl -O $PLUG_VIM_URL; cd -;} )
+
+# ==== install basic packages
+
+if [ $OS_NAME == "Linux" ];then
+  # setup debian/ubuntu
+  echo "=> installing linux packages"
+  source setup_ubuntu.sh
+elif [ $OS_NAME == "Darwin" ];then
+  echo "=> installing macos packages"
+  # setup macos
+  # brew install tmux neovim python3 ag reattach-to-user-namespace
+  # brew cask install iterm2
+fi
+
+# == link dotfiles
 FILES=(
 'bashrc'
 'profile'
@@ -57,4 +72,5 @@ for i in ${FILES[@]}; do
     ln -s $HOME/dotfile/$i $HOME/.$i
   fi
 done
+
 echo "=> end" 

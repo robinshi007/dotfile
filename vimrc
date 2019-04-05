@@ -84,9 +84,9 @@ set noswapfile
 augroup javascript
   autocmd!
   autocmd BufRead .babelrc,.eslintrc,.tslintrc  set filetype=json
-  autocmd FileType javascript setlocal foldmethod=syntax
-  autocmd FileType javascript setlocal formatprg=prettier\ --stdin
-  autocmd BufWritePre *.js    :normal gggqG
+  "autocmd FileType javascript setlocal foldmethod=syntax
+  "autocmd FileType javascript setlocal formatprg=prettier\ --stdin
+  "autocmd BufWritePre *.js    :normal gggqG
   "autocmd BufWritePre *.js    exe "normal! gggqG\<C-o><C-o>"
 augroup END
 augroup css
