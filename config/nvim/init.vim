@@ -1,11 +1,12 @@
 " neovim plugins need python3.5+ and pip3 install neovim
-"
+" vim-plug > ncm2 > ale > neoformat > solarized > airline >
 if &compatible
   set nocompatible
 end
 
 " === plugged plugins ===
 call plug#begin($HOME.'/.config/nvim/plugged')
+" basics
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdtree'
@@ -14,32 +15,44 @@ Plug 'Raimondi/delimitMate'
 Plug 'junegunn/vim-easy-align'
 Plug 'Yggdroot/indentLine'
 Plug 'easymotion/vim-easymotion'
+Plug 'cloudhead/neovim-fuzzy'
+Plug 'majutsushi/tagbar'
+" UI
 Plug 'altercation/vim-colors-solarized'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'cloudhead/neovim-fuzzy'
+" languages
 Plug 'editorconfig/editorconfig-vim'
-
-" language
-Plug 'vim-syntastic/syntastic'
+Plug 'airblade/vim-gitgutter'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
 Plug 'chr4/nginx.vim'
-Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
-Plug 'rust-lang/rust.vim'
+Plug 'othree/html5.vim'
+Plug 'elzr/vim-json'
+Plug 'pangloss/vim-javascript'
+Plug 'posva/vim-vue'
+Plug 'mxw/vim-jsx'
+"Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+"Plug 'rust-lang/rust.vim'
 
-" snippets
-Plug 'Shougo/neosnippet.vim'
-Plug 'Shougo/neosnippet-snippets'
+" autocomplete
+Plug 'ncm2/ncm2'
+Plug 'ncm2/ncm2-ultisnips'
+Plug 'roxma/nvim-yarp'
+Plug 'ncm2/ncm2-path'
+Plug 'ncm2/ncm2-bufword'
 
-" complete
-Plug 'Shougo/deoplete.nvim',  { 'do': ':UpdateRemotePlugins '}
-Plug 'zchee/deoplete-go',  { 'do': 'make'}
-Plug 'zchee/deoplete-jedi'
-Plug 'sebastianmarkow/deoplete-rust'
-
-" backup plugins
-"Plug 'airblade/vim-gitgutter'
-"Plug 'w0rp/ale'
-
+Plug 'ncm2/ncm2-jedi'
+Plug 'ncm2/ncm2-tern', {'do': 'sudo npm install'}
+Plug 'ncm2/ncm2-cssomni'
+" linter, syntax check
+Plug 'w0rp/ale'
+" formater
+Plug 'sbdchd/neoformat'
+" ncm2 snip
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'tenfyzhong/CompleteParameter.vim'
 call plug#end()
 
 " === modules ===

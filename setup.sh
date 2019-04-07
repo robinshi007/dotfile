@@ -50,6 +50,8 @@ FILES=(
 'gitignore'
 'config'
 'tmux.conf'
+'tern-config'
+'eslintrc.json'
 )
 
 # link dotfiles to $HOME
@@ -73,4 +75,4 @@ for i in ${FILES[@]}; do
   fi
 done
 
-echo "=> end" 
+echo "=> end"

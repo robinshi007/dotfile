@@ -3,20 +3,22 @@ sudo sed -i "s/archive.ubuntu.com/mirrors.aliyun.com/g"  /etc/apt/sources.list
 sudo sed -i "s/security.ubuntu.com/mirrors.aliyun.com/g" /etc/apt/sources.list
 
 # 2. install tools
-# git tmux vim neovim fzy 
+# git tmux vim neovim fzy
 # install neovom
 sudo apt update
 sudo apt autoremove -y
 sudo apt install software-properties-common -y
-sudo add-apt-repository ppa:neovim-ppa/stable -y
-sudo apt update
-sudo apt install git neovim vim fzy -y
-sudo apt install python-pip python-dev python3-dev python3-pip -y
-if ! type rg &>/dev/null;then
-  RIPGREP_DEB="ripgrep_0.10.0_amd64.deb"
-  curl -LO https://github.com/BurntSushi/ripgrep/releases/download/0.10.0/$RIPGREP_DEB
-  sudo dpkg -i $RIPGREP_DEB
-  rm $RIPGREP_DEB
+if ! type nvim &>/dev/null;then
+  sudo add-apt-repository ppa:neovim-ppa/stable -y
+  sudo apt update
+  sudo apt install git neovim vim fzy -y
+  sudo apt install python-pip python-dev python3-dev python3-pip -y
+  if ! type rg &>/dev/null;then
+    RIPGREP_DEB="ripgrep_0.10.0_amd64.deb"
+    curl -LO https://github.com/BurntSushi/ripgrep/releases/download/0.10.0/$RIPGREP_DEB
+    sudo dpkg -i $RIPGREP_DEB
+    rm $RIPGREP_DEB
+  fi
 fi
 
 # 3. install runtime
