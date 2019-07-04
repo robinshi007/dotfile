@@ -139,18 +139,17 @@ mkcd()
 
 # == PATH
 if [ -d "$HOME/bin" ]; then
-    PATH="$HOME/bin:$PATH"
+    export PATH="$HOME/bin:$PATH"
 fi
 if [ $OS_NAME == "Darwin" ];then
-  PATH="/usr/local/opt/coreutils/libexec/gnubin":$PATH
+  export PATH="/usr/local/opt/coreutils/libexec/gnubin":$PATH
 fi
 #if [[ -d "$HOME/.nvm" ]]; then
   #export NVM_DIR="$HOME/.nvm"
 #fi
-#if [ -d "$HOME/.cargo/bin" ]; then
-    ##export PATH=~/.cargo/bin:$PATH
-    #PATH="$HOME/.cargo/bin:$PATH"
-#fi
+if [ -d "$HOME/.cargo/bin" ]; then
+    export PATH="$HOME/.cargo/bin:$PATH"
+fi
 if [[ -d /usr/local/go ]];then
     export GOROOT=/usr/local/go
     export PATH=$GOROOT/bin:$PATH
@@ -160,11 +159,11 @@ if [[ $(type go &>/dev/null) ]] && [ -d "$HOME/projects/go" ]; then
     export PATH=$GOPATH/bin:$PATH
 fi
 
-
 # 3rd party init
 # nvm init
 #[[ -s "$HOME/.nvm/nvm.sh" ]] && source "$HOME/.nvm/nvm.sh"  # This loads nvm
-
+# gvm init
+#[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
 
 # local custom
 if [ -f ~/.bash_local ]; then
