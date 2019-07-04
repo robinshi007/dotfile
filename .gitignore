@@ -1,6 +1,6 @@
 /vim/.netrwhist
 /vim/autoload/
 /vim/plugged/
-/config/nvim/plugged/
-/config/nvim/autoload/
-/config/configstore/
+/config/
+!/config/nvim/init.vim
+!/config/nvim/config/

@@ -21,6 +21,7 @@ Plug 'editorconfig/editorconfig-vim'
 
 " language
 Plug 'vim-syntastic/syntastic'
+Plug 'HerringtonDarkholme/yats.vim'
 Plug 'chr4/nginx.vim'
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'rust-lang/rust.vim'
@@ -29,11 +30,16 @@ Plug 'rust-lang/rust.vim'
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
 
+" UI
+"Plug 'Shougo/denite.nvim'
+
 " complete
 Plug 'Shougo/deoplete.nvim',  { 'do': ':UpdateRemotePlugins '}
-Plug 'zchee/deoplete-go',  { 'do': 'make'}
+Plug 'zchee/deoplete-go',     { 'do': 'make'}
+Plug 'mhartington/nvim-typescript',     { 'do': './install.sh'}
 Plug 'zchee/deoplete-jedi'
 Plug 'sebastianmarkow/deoplete-rust'
+" after install deoplete plugin, do :PlugInstall and :UpdateRemotePlugins
 
 " backup plugins
 "Plug 'airblade/vim-gitgutter'

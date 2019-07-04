@@ -51,7 +51,7 @@ set completeopt-=preview
 let g:deoplete#enable_at_startup=1
 let g:deoplete#auto_complete_delay=50
 let g:deoplete#enable_ignore_case=0
-let g:deoplete#enable_camel_case=0
+let g:deoplete#enable_camel_case=1
 let g:deoplete#enable_smart_case=1
 let g:deoplete#enable_refresh_always=0
 let g:deoplete#max_list=20
@@ -71,9 +71,9 @@ augroup rust-mapping
 augroup end
 " }}}
 " neosnippet {{{
-imap <c-k> <Plug><neosnippet_expand_or_jump)
-smap <c-k> <Plug><neosnippet_expand_or_jump)
-xmap <c-k> <Plug><neosnippet_expand_target)
+imap <c-k> <Plug>(neosnippet_expand_or_jump)
+smap <c-k> <Plug>(neosnippet_expand_or_jump)
+xmap <c-k> <Plug>(neosnippet_expand_target)
 
 imap <expr><TAB> pumvisible() ?
   \ "\<C-n>" :neosnippet#expandable_or_jumpable() ?

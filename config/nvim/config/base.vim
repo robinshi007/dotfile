@@ -11,6 +11,7 @@ set undolevels=100
 set clipboard=unnamed
 set nowrap
 set hidden
+set iskeyword+=-
 autocmd FileType markdown setlocal wrap
 
 set backspace=indent,eol,start
