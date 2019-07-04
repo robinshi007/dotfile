@@ -154,25 +154,27 @@ fi
 if [ $OS_NAME == "Darwin" ];then
   PATH="/usr/local/opt/coreutils/libexec/gnubin":$PATH
 fi
-if [[ -d "$HOME/.nvm" ]]; then
+if [[ -d "$HOME/.nvm" ]];then
   export NVM_DIR="$HOME/.nvm"
 fi
-if [ -d "$HOME/.cargo/bin" ]; then
+if [ -d "$HOME/.cargo/bin" ];then
     #export PATH=~/.cargo/bin:$PATH
     PATH="$HOME/.cargo/bin:$PATH"
+fi
+if [[ -d "/usr/local/go" ]];then
+  export GOROOT=/usr/local/go
+  export PATH=$GOROOT/bin:$PATH
 fi
 if [[ "$(command -v go)" ]] && [ -d "$HOME/projects/go" ]; then
     export GOPATH=$HOME/projects/go
     export PATH=$GOPATH/bin:$PATH
 fi
 
-
 # 3rd party init
 # nvm init
 [[ -s "$HOME/.nvm/nvm.sh" ]] && source "$HOME/.nvm/nvm.sh"  # This loads nvm
 # gvm init
-[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
-
+#[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
 
 # local custom
 if [ -f ~/.bash_local ]; then
