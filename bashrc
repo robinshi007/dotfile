@@ -6,7 +6,7 @@ case $- in
       *) return;;
 esac
 
-# opts
+# == opts
 export HISTCONTROL=ignoreboth
 export HISTSIZE=1000
 export HISTFILESIZE=2000
@@ -24,7 +24,7 @@ for option in autocd globstar; do
     shopt -s "$option" 2>/dev/null
 done
 
-# alias
+# == alias
 alias reload='source ~/.bashrc'
 alias ll='ls -lh'
 alias la='ls -Ah'   # show hidden
@@ -35,13 +35,13 @@ alias md='mkdir -p'
 alias cls='clear'
 # alias python='python3'
 
-# export
+# == export
 export LC_ALL="en_US.utf-8"
 export LANG="en_US"
 export EDITOR='vim'
 export OS_NAME=$(uname -s)
 
-# dircolor
+# == dircolor
 if [ $OS_NAME == "Linux" ];then
   eval "$(dircolors -b ~/.dircolors)"
   alias ls='ls --color=auto'
@@ -62,7 +62,7 @@ else
   export TERM='xterm-color'
 fi
 
-# prompt colors
+# == prompt colors
 RESET=$(tput setaf 7)
 YELLOW=$(tput setaf 3)
 RED=$(tput setaf 1)
@@ -97,23 +97,13 @@ function prompt_smily()
 # Git status.
 # Adapted from: https://github.com/cowboy/dotfiles/
 function prompt_git() {
-  local status output flags
-  status="$(git status 2>/dev/null)"
-  [[ $? != 0 ]] && return;
-  output="$(echo "$status" | awk '/# Initial commit/ {print "(init)"}')"
-  [[ "$output" ]] || output="$(echo "$status" | awk '/# On branch/ {print $4}')"
-  [[ "$output" ]] || output="$(git branch | perl -ne '/^\* (.*)/ && print $1')"
-  flags="$(
-  echo "$status" | awk 'BEGIN {r=""} \
-    /^# Changes to be committed:$/        {r=r "+"}\
-    /^# Changes not staged for commit:$/  {r=r "!"}\
-    /^# Untracked files:$/                {r=r "?"}\
-  END {print r}'
-  )"
-  if [[ "$flags" ]]; then
-    output="$output[$flags]"
+  local output
+  output="$(git branch 2>/dev/null | grep '^*' | tr -d '* ' | tr -d '\n')"
+  if [ -z "$output" ];then
+    echo -ne ""
+  else
+    echo -ne "($output)"
   fi
-  echo -ne " on ${style_branch}${output}"
 }
 function set_bash_prompt()
 {
@@ -131,7 +121,7 @@ function set_bash_prompt()
 }
 PROMPT_COMMAND=set_bash_prompt
 
-# functions
+# == functions
 ips()
 {
     ifconfig | grep "inet " | awk '{ print $2}'
@@ -147,32 +137,31 @@ mkcd()
 }
 
 
-# PATH
+# == PATH
 if [ -d "$HOME/bin" ]; then
-    PATH="$HOME/bin:$PATH"
+    export PATH="$HOME/bin:$PATH"
 fi
 if [ $OS_NAME == "Darwin" ];then
-  PATH="/usr/local/opt/coreutils/libexec/gnubin":$PATH
+  export PATH="/usr/local/opt/coreutils/libexec/gnubin":$PATH
 fi
-if [[ -d "$HOME/.nvm" ]];then
-  export NVM_DIR="$HOME/.nvm"
+#if [[ -d "$HOME/.nvm" ]]; then
+  #export NVM_DIR="$HOME/.nvm"
+#fi
+if [ -d "$HOME/.cargo/bin" ]; then
+    export PATH="$HOME/.cargo/bin:$PATH"
 fi
-if [ -d "$HOME/.cargo/bin" ];then
-    #export PATH=~/.cargo/bin:$PATH
-    PATH="$HOME/.cargo/bin:$PATH"
+if [[ -d /usr/local/go ]];then
+    export GOROOT=/usr/local/go
+    export PATH=$GOROOT/bin:$PATH
 fi
-if [[ -d "/usr/local/go" ]];then
-  export GOROOT=/usr/local/go
-  export PATH=$GOROOT/bin:$PATH
-fi
-if [[ "$(command -v go)" ]] && [ -d "$HOME/projects/go" ]; then
+if [[ $(type go &>/dev/null) ]] && [ -d "$HOME/projects/go" ]; then
     export GOPATH=$HOME/projects/go
     export PATH=$GOPATH/bin:$PATH
 fi
 
 # 3rd party init
 # nvm init
-[[ -s "$HOME/.nvm/nvm.sh" ]] && source "$HOME/.nvm/nvm.sh"  # This loads nvm
+#[[ -s "$HOME/.nvm/nvm.sh" ]] && source "$HOME/.nvm/nvm.sh"  # This loads nvm
 # gvm init
 #[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
 

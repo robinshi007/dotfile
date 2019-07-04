@@ -1,6 +1,6 @@
 " === general ===
+filetype plugin indent on
 syntax enable
-filetype indent on
 
 set encoding=utf8
 set number
@@ -11,10 +11,13 @@ set undolevels=100
 set clipboard=unnamed
 set nowrap
 set hidden
+set shortmess+=c  " suppress the annoying messages
 autocmd FileType markdown setlocal wrap
 
 set backspace=indent,eol,start
 set iskeyword+=-
+set list
+set listchars=tab:▸\ ,eol:¬
 
 " === turn off swap files ===
 set noswapfile
