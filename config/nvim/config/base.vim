@@ -1,6 +1,6 @@
 " === general ===
+filetype plugin indent on
 syntax enable
-filetype indent on
 
 set encoding=utf8
 set number
@@ -12,9 +12,13 @@ set clipboard=unnamed
 set nowrap
 set hidden
 set iskeyword+=-
+set shortmess+=c  " suppress the annoying messages
 autocmd FileType markdown setlocal wrap
 
 set backspace=indent,eol,start
+set iskeyword+=-
+set list
+set listchars=tab:▸\ ,eol:¬
 
 " === turn off swap files ===
 set noswapfile
@@ -42,6 +46,11 @@ set softtabstop=2
 set expandtab
 
 set colorcolumn=80
+
+" == fold ===
+set foldmethod=syntax
+set nofoldenable
+set foldlevel=99
 
 " === scrolling ===
 set scrolloff=1

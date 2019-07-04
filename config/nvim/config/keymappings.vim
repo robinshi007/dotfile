@@ -7,6 +7,7 @@ let mapleader=","
 nmap <LEADER><LEADER> <C-^>
 nmap <silent> <LEADER>ev :e $MYVIMRC<CR>
 nmap <silent> <LEADER>sv :so $MYVIMRC<CR>
+nmap <LEADER>tw :call StripTrailingWhitespace()<CR>
 
 " buffers
 " :ls to list all buffers

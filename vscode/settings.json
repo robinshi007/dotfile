@@ -1,0 +1,25 @@
+// place your key bindings in this file to override the defaults
+// 将设置放入此文件中以覆盖默认设置
+{
+    // editor
+    "editor.tabSize": 2,
+    "editor.renderIndentGuides": true,
+    "editor.renderWhitespace": "boundary",
+    "window.zoomLevel": 0,
+
+    // vim
+    "vim.easymotion": true,
+    "vim.hlsearch": true,
+    "vim.useSystemClipboard": true,
+    //"vim.useCtrlKeys": true,
+    "vim.leader": ",",
+    "vim.insertModeKeyBindings": [
+        {
+            "before": [ "j", "j" ],
+            "after": [ "<Esc>" ]
+        }
+    ],
+    "extensions.ignoreRecommendations": false,
+    "explorer.confirmDelete": false,
+    "files.eol": "\n"
+}

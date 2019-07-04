@@ -1,0 +1,37 @@
+// place your key bindings in this file to override the defaults
+[
+    {
+        "key": "ctrl+e",
+        "command": "workbench.view.explorer"
+    },
+    {
+        "key": "h",
+        "command": "list.collapse",
+        "when": "explorerviewletvisible && filesexplorerfocus && !inputfocus"
+    },
+    {
+        "key": "l",
+        "command": "list.expand",
+        "when": "explorerviewletvisible && filesexplorerfocus && !inputfocus"
+    },
+    {
+        "key": "j",
+        "command": "list.focusdown",
+        "when": "explorerviewletvisible && filesexplorerfocus && !inputfocus"
+    },
+    {
+        "key": "k",
+        "command": "list.focusup",
+        "when": "explorerviewletvisible && filesexplorerfocus && !inputfocus"
+    },
+    {
+        "key": "o",
+        "command": "list.toggleexpand",
+        "when": "explorerviewletvisible && filesexplorerfocus && !inputfocus"
+    },
+    {
+        "key": "enter",
+        "command": "list.select",
+        "when": "explorerviewletvisible && filesexplorerfocus && !inputfocus"
+    }
+]
