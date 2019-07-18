@@ -5,8 +5,22 @@
 " go to older/newer in jump list: ctrl+o/ctrl+i
 
 set nocompatible
+if !exists("g:os")
+  if has('win32') || has('win64')
+    let g:os='Windows'
+  else
+    let g:os=substitute(system('uname'),'\n','','')
+  endif
+endif
 
-call plug#begin($HOME.'/.vim/plugged')
+if g:os == "Windows"
+  let g:mypath=$HOME."/vimfiles"
+else
+  let g:mypath=$HOME."/.vim"
+endif
+
+set rtp+=g:mypath
+call plug#begin(g:mypath."/plugged")
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdtree'
@@ -17,6 +31,7 @@ Plug 'ervandew/supertab'
 Plug 'kien/ctrlp.vim'
 Plug 'altercation/vim-colors-solarized'
 Plug 'easymotion/vim-easymotion'
+Plug 'editorconfig/editorconfig-vim'
 
 " files
 Plug 'chr4/nginx.vim'
@@ -28,12 +43,15 @@ Plug 'leafgarland/typescript-vim'
 
 Plug 'hail2u/vim-css3-syntax'
 Plug 'cakebaker/scss-syntax.vim'
+Plug 'posva/vim-vue'
 
 
 call plug#end()
 syntax enable
 filetype indent on
 
+set encoding=utf-8
+set fileencoding=utf-8
 
 set number
 set showmatch
@@ -64,7 +82,6 @@ if has("statusline")
     set statusline+=%{(exists(\"+bomb\")\&&\&bomb)?\",BOM\":\"\"}
     set statusline+=/%{&ff}]
     set statusline+=\(%l\ %L,\%c\ %P)
-
 endif
 
 " theme
@@ -72,13 +89,21 @@ set background=dark
 let g:solarized_contrast="high"
 let g:solarized_termcolors=16
 colorscheme solarized
+if has('gui_running')
+  if g:os == 'Windows'
+    set guifont=Consolas:h12
+  endif
+  set guioptions-=T
+  set guioptions-=m
+  set guioptions-=r
+endif
 
 " directory
 set noswapfile
-"set directory=~/.vim_swap//
-"set backupdir=~/.vim_backup//
-"set viewdir=~/.vim_views//
-"set undodir=~/.vim_undo//
+"set directory=~/vim_swap/
+"set backupdir=~/vim_backup/
+"set viewdir=~/vim_views/
+"set undodir=~/vim_undo/
 
 " autogroup
 augroup javascript
@@ -120,6 +145,7 @@ nmap <C-e> :NERDTreeToggle<CR>
 let NERDTreeIgnore=["\.git", "\.exe"]
 let NERDTreeDirArrows=0
 let NERDTreeQuitOnOpen=1
+let NERDTreeShowHidden=1
 " === NERDCommenter ===
 " <leader>c<space>
 nmap <silent> gc <LEADER>c<SPACE> " toggle comment in normal mode
