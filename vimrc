@@ -14,13 +14,12 @@ if !exists("g:os")
 endif
 
 if g:os == "Windows"
-  let g:mypath=$HOME."/vimfiles"
+  let $VIMHOME=$HOME."/vimfiles"
 else
-  let g:mypath=$HOME."/.vim"
+  let $VIMHOME=$HOME."/.vim"
 endif
 
-set rtp+=g:mypath
-call plug#begin(g:mypath."/plugged")
+call plug#begin($VIMHOME.'/plugged')
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdtree'
@@ -99,11 +98,11 @@ if has('gui_running')
 endif
 
 " directory
-set noswapfile
-"set directory=~/vim_swap/
-"set backupdir=~/vim_backup/
-"set viewdir=~/vim_views/
-"set undodir=~/vim_undo/
+"set noswapfile
+set directory=$VIMHOME/tmp//
+set backupdir=$VIMHOME/tmp//
+set undodir=$VIMHOME/tmp//
+"set viewdir=$VIMHOME/tmp//
 
 " autogroup
 augroup javascript
