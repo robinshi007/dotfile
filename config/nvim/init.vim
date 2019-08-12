@@ -19,21 +19,20 @@ Plug 'cloudhead/neovim-fuzzy'
 Plug 'majutsushi/tagbar'
 Plug 'airblade/vim-gitgutter'
 Plug 'godlygeek/tabular'
+Plug 'editorconfig/editorconfig-vim'
 " UI
 Plug 'altercation/vim-colors-solarized'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " languages
-Plug 'editorconfig/editorconfig-vim'
 Plug 'chr4/nginx.vim'
 Plug 'plasticboy/vim-markdown'
 Plug 'othree/html5.vim'
 Plug 'elzr/vim-json'
-Plug 'pangloss/vim-javascript'
+Plug 'pangloss/vim-javascript'       "for highlight javascript
+Plug 'HerringtonDarkholme/yats.vim'  "for highlight typescript
 Plug 'mxw/vim-jsx'
-"Plug 'posva/vim-vue'
-"Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
-"Plug 'rust-lang/rust.vim'
+Plug 'posva/vim-vue'
 
 if has('unix')
   let s:uname=substitute(system('uname -s'), '\n', '','')
@@ -42,7 +41,6 @@ if has('unix')
     Plug 'rust-lang/rust.vim'
 
     Plug 'vim-syntastic/syntastic'
-    Plug 'HerringtonDarkholme/yats.vim'
 
     " snippets
     Plug 'Shougo/neosnippet.vim'

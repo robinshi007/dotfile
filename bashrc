@@ -154,7 +154,7 @@ if [[ -d /usr/local/go ]];then
     export GOROOT=/usr/local/go
     export PATH=$GOROOT/bin:$PATH
 fi
-if [[ $(type go &>/dev/null) ]] && [ -d "$HOME/projects/go" ]; then
+if [[ $(type go) ]] && [ -d "$HOME/projects/go" ]; then
     export GOPATH=$HOME/projects/go
     export PATH=$GOPATH/bin:$PATH
 fi
