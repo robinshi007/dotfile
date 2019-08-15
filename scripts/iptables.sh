@@ -15,27 +15,24 @@ sudo iptables -t nat -X
 sudo iptables -t mangle -F
 sudo iptables -t mangle -X
 
-# 2. Set default chain policies
-sudo iptables -P INPUT   DROP
-sudo iptables -P FORWARD ACCEPT
-sudo iptables -P OUTPUT  ACCEPT
-
-# 03. Block a specific ip-address
-#BLOCK_THIS_IP="x.x.x.x"
-#sudo iptables -A INPUT -s "$BLOCK_THIS_IP" -j DROP
+# 05. Allow loopback
+sudo iptables -A INPUT  -i lo -p all -j ACCEPT
+sudo iptables -A OUTPUT -o lo -p all -j ACCEPT
 
 # 04. Drop invalid packets
 #sudo iptables -A INPUT   -m conntrack --ctstate INVALID -j DROP
 #sudo iptables -A FORWARD -m conntrack --ctstate INVALID -j DROP
 #sudo iptables -A OUTPUT  -m conntrack --ctstate INVALID -j DROP
 
-# Allows established and related incoming traffic,
-# Allow return traffic to outgoing connections initiated by the server itself.
+# Keep all established and related incoming/output connections
 sudo iptables -A INPUT  -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
-
-# Allow outgoing traffic of all established connections,
-# which are typically the response to legitimate incoming connections.
 sudo iptables -A OUTPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+
+# 06. Ping from inside to outside / outside to inside
+sudo iptables -A OUTPUT -p icmp --icmp-type echo-request -j ACCEPT
+sudo iptables -A INPUT  -p icmp --icmp-type echo-reply   -j ACCEPT
+sudo iptables -A INPUT  -p icmp --icmp-type echo-request -j ACCEPT
+sudo iptables -A OUTPUT -p icmp --icmp-type echo-reply   -j ACCEPT
 
 # 04. Allow DNS
 sudo iptables -A INPUT  -p udp -i $ETH0 --sport 53 -j ACCEPT
@@ -46,39 +43,14 @@ sudo iptables -A INPUT  -p udp -i $ETH0 --sport 123 -j ACCEPT
 sudo iptables -A OUTPUT -p udp -o $ETH0 --dport 123 -j ACCEPT
 
 # DHCP
-#sudo iptables -A INPUT  -i $ETH0 -p udp -m state --state ESTABLISHED,RELATED --sport 67:68 -j ACCEPT
-#sudo iptables -A OUTPUT -o $ETH0 -p udp -m udp   --dport 67:68 -j ACCEPT
-
-# 05. Allow loopback
-sudo iptables -A INPUT  -i lo -j ACCEPT
-sudo iptables -A OUTPUT -o lo -j ACCEPT
-
-# 06. Ping from inside to outside / outside to inside
-#sudo iptables -A OUTPUT -p icmp --icmp-type echo-request -j ACCEPT
-#sudo iptables -A INPUT  -p icmp --icmp-type echo-reply   -j ACCEPT
-#sudo iptables -A INPUT  -p icmp --icmp-type echo-request -j ACCEPT
-#sudo iptables -A OUTPUT -p icmp --icmp-type echo-reply   -j ACCEPT
+#sudo iptables -A INPUT   -p udp -m state --state ESTABLISHED,RELATED --sport 67:68 -j ACCEPT
+#sudo iptables -A OUTPUT  -p udp -m udp   --dport 67:68 -j ACCEPT
 
 # 07 Allow all incoming/outgoing SSH
-#sudo iptables -A INPUT -p tcp --dport 22 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-#sudo iptables -A OUTPUT -p tcp --sport 22 -m conntrack --ctstate ESTABLISHED -j ACCEPT
-sudo iptables -A INPUT  -i $ETH0 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
-sudo iptables -A OUTPUT -o $ETH0 -p tcp --sport 22 -m state --state ESTABLISHED     -j ACCEPT
+sudo iptables -A INPUT  -i $ETH0 -p tcp --dport 2020 -m state --state NEW,ESTABLISHED -j ACCEPT
+sudo iptables -A OUTPUT -o $ETH0 -p tcp --sport 2020 -m state --state ESTABLISHED     -j ACCEPT
 #sudo iptables -A OUTPUT -o $ETH0 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
 #sudo iptables -A INPUT  -i $ETH0 -p tcp --sport 22 -m state --state ESTABLISHED     -j ACCEPT
-
-# 08. Setup docker0, check if docker0 exist when `ifconfig`
-sudo iptables -t nat -A POSTROUTING ! -o docker0  -s 172.17.0.0/16 -j MASQUERADE
-sudo iptables -t nat -A POSTROUTING -o $ETH0 -j MASQUERADE
-sudo iptables -A FORWARD -i docker0 -o $ETH0   -j ACCEPT
-sudo iptables -A FORWARD -i $ETH0   -o docker0 -j ACCEPT
-
-#sudo iptables -A INPUT  -i docker0 -p tcp -m multiport --dports 80,443,3000 -m state --state NEW,ESTABLISHED -j ACCEPT
-#sudo iptables -A OUTPUT -o docker0 -p tcp -m multiport --sports 80,443,3000 -m state --state ESTABLISHED -j ACCEPT
-#sudo iptables -A INPUT  -i docker0 -p tcp -m multiport --sports 80,443,3000,9000 -m state --state ESTABLISHED -j ACCEPT
-#sudo iptables -t mangle -A FORWARD -i docker0 -o $ETH0 -j ACCEPT
-#sudo iptables -t mangle -A FORWARD -i $ETH0 -o docker0 -j ACCEPT -m state --state ESTABLISHED,RELATED
-#sudo iptables -t mangle -A FORWARD -i $ETH0 -o docker0 -j DROP
 
 # 09 Allow all incoming/outgoing HTTP and HTTPS
 sudo iptables -A INPUT  -p tcp -m multiport --dports 80,443 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
@@ -86,11 +58,17 @@ sudo iptables -A OUTPUT -p tcp -m multiport --sports 80,443 -m conntrack --ctsta
 sudo iptables -A OUTPUT -p tcp -m multiport --dports 80,443 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
 sudo iptables -A INPUT  -p tcp -m multiport --sports 80,443 -m conntrack --ctstate ESTABLISHED     -j ACCEPT
 
+# 08. Setup docker0, check if docker0 exist when `ifconfig`
+sudo iptables -t nat -A POSTROUTING ! -o docker0  -s 172.17.0.0/16 -j MASQUERADE
+sudo iptables -t nat -A POSTROUTING -o $ETH0 -j MASQUERADE
+sudo iptables -A FORWARD -i docker0 -o $ETH0   -j ACCEPT
+sudo iptables -A FORWARD -i $ETH0   -o docker0 -j ACCEPT
+
 # 10. Shadowsocks server
-sudo iptables -A INPUT  -i $ETH0 -p tcp --dport 2015 -m state --state NEW,ESTABLISHED -j ACCEPT
-sudo iptables -A OUTPUT -o $ETH0 -p tcp --dport 2015 -m state --state ESTABLISHED     -j ACCEPT
-#sudo iptables -A INPUT  -i $ETH0 -p udp --dport 2015 -m state --state NEW,ESTABLISHED -j ACCEPT
-#sudo iptables -A OUTPUT -o $ETH0 -p udp --dport 2015 -m state --state ESTABLISHED     -j ACCEPT
+sudo iptables -A INPUT  -i $ETH0 -p tcp --dport 2019 -m state --state NEW,ESTABLISHED -j ACCEPT
+sudo iptables -A OUTPUT -o $ETH0 -p tcp --sport 2019 -m state --state ESTABLISHED     -j ACCEPT
+sudo iptables -A INPUT  -i $ETH0 -p udp --dport 2019 -m state --state NEW,ESTABLISHED -j ACCEPT
+sudo iptables -A OUTPUT -o $ETH0 -p udp --sport 2019 -m state --state ESTABLISHED     -j ACCEPT
 
 # 11. Postgresql
 #sudo iptables -A INPUT -p tcp -s 15.15.15.0/24 --dport 5432 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
@@ -136,27 +114,29 @@ sudo iptables -A OUTPUT -o $ETH0 -p tcp --dport 2015 -m state --state ESTABLISHE
 #sudo iptables -A INPUT -p tcp -m tcp --tcp-flags RST RST -m limit --limit 2/second --limit-burst 2 -j DROP
 
 #Protection from PING of Death attack
-#sudo iptables -N PING_OF_DEATH
-#sudo iptables -A PING_OF_DEATH -p icmp --icmp-type echo-request -m hashlimit --hashlimit 1/s --hashlimit-burst 10 --hashlimit-htable-expire 300000 --hashlimit-mode srcip --hashlimit-name t_PING_OF_DEATH -j RETURN
-#sudo iptables -A PING_OF_DEATH -j DROP
-#sudo iptables -A INPUT -p icmp --icmp-type echo-request -j PING_OF_DEATH
-##Prevent some nasty attacks
+sudo iptables -N PING_OF_DEATH
+sudo iptables -A PING_OF_DEATH -p icmp --icmp-type echo-request -m hashlimit --hashlimit 1/s --hashlimit-burst 10 --hashlimit-htable-expire 300000 --hashlimit-mode srcip --hashlimit-name t_PING_OF_DEATH -j RETURN
+sudo iptables -A PING_OF_DEATH -j DROP
+sudo iptables -A INPUT -p icmp --icmp-type echo-request -j PING_OF_DEATH
+
 ##prevent port scanning, SYN flood attacks, invalid packages, malformed XMAS packets, NULL packets, etc.
-#sudo iptables -N PORTSCAN
-#sudo iptables -A PORTSCAN -p tcp --tcp-flags ACK,FIN FIN -j DROP
-#sudo iptables -A PORTSCAN -p tcp --tcp-flags ACK,PSH PSH -j DROP
-#sudo iptables -A PORTSCAN -p tcp --tcp-flags ACK,URG URG -j DROP
-#sudo iptables -A PORTSCAN -p tcp --tcp-flags FIN,RST FIN,RST -j DROP
-#sudo iptables -A PORTSCAN -p tcp --tcp-flags SYN,ACK SYN,ACK -j DROP
-#sudo iptables -A PORTSCAN -p tcp --tcp-flags SYN,FIN SYN,FIN -j DROP
-#sudo iptables -A PORTSCAN -p tcp --tcp-flags SYN,RST SYN,RST -j DROP
-#sudo iptables -A PORTSCAN -p tcp --tcp-flags ALL ALL -j DROP
-#sudo iptables -A PORTSCAN -p tcp --tcp-flags ALL NONE -j DROP
-#sudo iptables -A PORTSCAN -p tcp --tcp-flags ALL FIN,PSH,URG -j DROP
-#sudo iptables -A PORTSCAN -p tcp --tcp-flags ALL SYN,FIN,PSH,URG -j DROP
-#sudo iptables -A PORTSCAN -p tcp --tcp-flags ALL SYN,RST,ACK,FIN,URG -j DROP
-#sudo iptables -A INPUT -f -j DROP
-#sudo iptables -A INPUT -p tcp ! --syn -m state --state NEW -j DROP
+sudo iptables -N PORTSCAN
+sudo iptables -A PORTSCAN -p tcp --tcp-flags ACK,FIN FIN -j DROP
+sudo iptables -A PORTSCAN -p tcp --tcp-flags ACK,PSH PSH -j DROP
+sudo iptables -A PORTSCAN -p tcp --tcp-flags ACK,URG URG -j DROP
+sudo iptables -A PORTSCAN -p tcp --tcp-flags FIN,RST FIN,RST -j DROP
+sudo iptables -A PORTSCAN -p tcp --tcp-flags SYN,ACK SYN,ACK -j DROP
+sudo iptables -A PORTSCAN -p tcp --tcp-flags SYN,FIN SYN,FIN -j DROP
+sudo iptables -A PORTSCAN -p tcp --tcp-flags SYN,RST SYN,RST -j DROP
+sudo iptables -A PORTSCAN -p tcp --tcp-flags ALL ALL -j DROP
+sudo iptables -A PORTSCAN -p tcp --tcp-flags ALL NONE -j DROP
+sudo iptables -A PORTSCAN -p tcp --tcp-flags ALL FIN,PSH,URG -j DROP
+sudo iptables -A PORTSCAN -p tcp --tcp-flags ALL SYN,FIN,PSH,URG -j DROP
+sudo iptables -A PORTSCAN -p tcp --tcp-flags ALL SYN,RST,ACK,FIN,URG -j DROP
+# drop fragmented packages
+sudo iptables -A INPUT -f -j DROP
+# SYN packets check
+sudo iptables -A INPUT -p tcp ! --syn -m state --state NEW -j DROP
 
 # 36 Block the port for internal access only
 #sudo iptables -A INPUT -p tcp --dport 9000 -s 127.0.0.0/8 -j ACCEPT
@@ -167,31 +147,31 @@ sudo iptables -A OUTPUT -o $ETH0 -p tcp --dport 2015 -m state --state ESTABLISHE
 #sudo iptables -A INPUT -p tcp --dport 9091 -j REJECT
 
 #### 02. Set default policy to drop
-#sudo iptables -A INPUT   -j DROP
-#sudo iptables -A OUTPUT  -j DROP
-#sudo iptables -A FORWARD -j DROP
+sudo iptables -A INPUT   -j DROP
+sudo iptables -A FORWARD -j ACCEPT
+sudo iptables -A OUTPUT  -j ACCEPT
 
 
 # IPV6
-IP6TABLES="/sbin/ip6tables"
-[ -x $IP6TABLES ] || { echo "Error: $IP6TABLES not found" ; exit 1 ; }
+#IP6TABLES="/sbin/ip6tables"
+#[ -x $IP6TABLES ] || { echo "Error: $IP6TABLES not found" ; exit 1 ; }
 
-# Flush rules
-sudo $IP6TABLES -F
-sudo $IP6TABLES -X
-sudo $IP6TABLES -Z
+## Flush rules
+#sudo $IP6TABLES -F
+#sudo $IP6TABLES -X
+#sudo $IP6TABLES -Z
 
-# Accept everything on the loopback interface
-sudo $IP6TABLES -A INPUT -i lo -j ACCEPT
-sudo $IP6TABLES -A OUTPUT -o lo -j ACCEPT
+## Accept everything on the loopback interface
+#sudo $IP6TABLES -A INPUT -i lo -j ACCEPT
+#sudo $IP6TABLES -A OUTPUT -o lo -j ACCEPT
 
-# enable output
-#sudo $IP6TABLES -A OUTPUT -o $ETH0 -j ACCEPT
+## enable output
+##sudo $IP6TABLES -A OUTPUT -o $ETH0 -j ACCEPT
 
-#### Default rule: reject every packet (incoming, outgoing and forwarded)
-sudo $IP6TABLES -P INPUT   DROP
-sudo $IP6TABLES -P OUTPUT  DROP
-sudo $IP6TABLES -P FORWARD DROP
+##### Default rule: reject every packet (incoming, outgoing and forwarded)
+#sudo $IP6TABLES -P INPUT   DROP
+#sudo $IP6TABLES -P OUTPUT  DROP
+#sudo $IP6TABLES -P FORWARD DROP
 
 ### common port
 #FTP - 21 TCP
@@ -217,6 +197,10 @@ sudo systemctl restart docker
 echo "=> reinstall fail2ban..."
 sudo apt remove  fail2ban -y
 sudo apt install fail2ban -y
+
+sudo iptables -A DOCKER-USER -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+sudo iptables -A DOCKER-USER -p tcp --dport 2019 -j ACCEPT
+sudo iptables -A DOCKER-USER -j DROP
 echo "=> done"
 
 
