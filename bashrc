@@ -155,14 +155,10 @@ if [[ -d /usr/local/go ]];then
     export GOROOT=/usr/local/go
     export PATH=$GOROOT/bin:$PATH
 fi
-<<<<<<< HEAD
-#if [[ $(type go &>/dev/null) ]] && [ -d "$HOME/projects/go" ]; then
-=======
 if [[ $(type go 2>/dev/null) ]] && [ -d "$HOME/projects/go" ]; then
->>>>>>> 9aeb701e51868137fb603e2b6cb9023f7944eccb
     export GOPATH=$HOME/projects/go
     export PATH=$GOPATH/bin:$PATH
-#fi
+fi
 
 # 3rd party init
 # nvm init
