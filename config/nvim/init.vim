@@ -32,7 +32,7 @@ Plug 'elzr/vim-json'
 Plug 'pangloss/vim-javascript'
 Plug 'posva/vim-vue'
 Plug 'mxw/vim-jsx'
-"Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 "Plug 'rust-lang/rust.vim'
 
 " autocomplete
@@ -45,6 +45,7 @@ Plug 'ncm2/ncm2-bufword'
 Plug 'ncm2/ncm2-jedi'
 Plug 'ncm2/ncm2-tern', {'do': 'sudo npm install'}
 Plug 'ncm2/ncm2-cssomni'
+Plug 'ncm2/ncm2-go'
 " linter, syntax check
 Plug 'w0rp/ale'
 " formater

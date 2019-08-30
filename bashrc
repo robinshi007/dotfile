@@ -40,6 +40,7 @@ export LC_ALL="en_US.utf-8"
 export LANG="en_US"
 export EDITOR='vim'
 export OS_NAME=$(uname -s)
+export GO111MODULE=on
 
 # == dircolor
 if [ $OS_NAME == "Linux" ];then
@@ -155,10 +156,10 @@ if [[ -d /usr/local/go ]];then
     export GOROOT=/usr/local/go
     export PATH=$GOROOT/bin:$PATH
 fi
-if [[ $(type go &>/dev/null) ]] && [ -d "$HOME/projects/go" ]; then
+#if [[ $(type go &>/dev/null) ]] && [ -d "$HOME/projects/go" ]; then
     export GOPATH=$HOME/projects/go
     export PATH=$GOPATH/bin:$PATH
-fi
+#fi
 
 
 # 3rd party init
