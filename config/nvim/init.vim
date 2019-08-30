@@ -79,7 +79,7 @@ Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'rust-lang/rust.vim'
 
 " autocomplete
-Plug 'neoclide/coc.nvim', { 'do': { -> coc#util#install() } }
+Plug 'neoclide/coc.nvim', { 'do': 'yarn install --frozen-lockfile'}
 " linter, fixer
 Plug 'w0rp/ale'
 " formater
@@ -106,7 +106,6 @@ set mousehide                  " hide mouse cursor when typing
 set history=1000               " increase the undo limit
 set backspace=indent,eol,start " allow backspacing over indention and line breaks
 set iskeyword+=-
-set matchpairs+=<:>
 "}}}
 
 " encodings {{{
@@ -211,6 +210,21 @@ function! SourceIfExists(file)
   endif
 endfunction
 
+" Zoom/Restore window.
+function! s:ZoomToggle() abort
+  if exists('t:zoomed') && t:zoomed
+    execute t:zoom_winrestcmd
+    let t:zoomed = 0
+  else
+    let t:zoom_winrestcmd = winrestcmd()
+    resize
+    vertical resize
+    let t:zoomed = 1
+  endif
+endfunction
+command! ZoomToggle call s:ZoomToggle()
+nnoremap <silent> <Leader>z :ZoomToggle<CR>
+
 " }}}
 
 " === key mappings === {{{
@@ -225,8 +239,22 @@ nnoremap k gk
 nnoremap gV `[v`]      " highlight last inserted text
 vnoremap < <gv
 vnoremap > >gv
+" WINDOWS
+nnoremap <C-h> <C-W>h
+nnoremap <C-j> <C-W>j
+nnoremap <C-k> <C-W>k
+nnoremap <C-l> <C-W>l
+" keep search result at the center of the screen
+nnoremap <silent> n nzz
+nnoremap <silent> N Nzz
+" buffer switch
+nnoremap [b :bprevious<CR>
+nnoremap ]b :bnext<CR>
 
 let mapleader=","
+nmap <LEADER>a ggVG"
+nmap <LEADER>v V`}
+vnoremap <LEADER>y "+y   " copy to system clipboard
 nmap <LEADER><LEADER> <C-^>
 nmap <silent> <LEADER>ev :e $MYVIMRC<CR>
 nmap <silent> <LEADER>sv :source $MYVIMRC<CR>
@@ -469,6 +497,7 @@ let g:ale_echo_msg_warning_str='W'
 let g:ale_echo_msg_format='[%linter%] %s [%severity%]'
 let g:ale_lint_delay=1000
 let g:ale_open_list=0
+"let g:ale_completion_enabled=1
 "let g:ale_linters_explicit=1
 let g:ale_lint_on_enter=0
 let g:ale_lint_on_text_changed='never'
@@ -479,27 +508,31 @@ let g:ale_lint_on_save=1
 "let g:ale_set_quickfix=1
 
 let b:ale_linters = {
-      \ 'python': ['pyls','flake8'],
+      \ 'python': ['pyls', 'flake8'],
       \ 'javascript': ['eslint'],
       \ 'go': ['golint','go vet'],
+      \ 'rust': ['rls'],
       \}
 let b:ale_fixers = {
       \ 'javascript': ['eslint'],
       \ 'python': ['autopep8', 'yapf'],
+      \ 'rust': ['rustfmt'],
       \}
-"let g:ale_python_pyls_use_global=1
+let g:ale_python_pyls_use_global=1
+let g:ale_rust_rls_toolchain='stable'
 nmap ]a <Plug>(ale_next_wrap)
 nmap [a <Plug>(ale_previous_wrap)
 nmap <leader>d <Plug>(ale_fix)
 " }}}
 " airline {{{
 let g:airline#extensions#tabline#enabled=1
+let g:airline#extensions#ale#enabled=1
 let g:airline_theme='solarized'
 let g:airline_solarized_bg='dark'
 " }}}
 " === languages === {{{
 " vim
-autocmd FileType vim setlocal foldmethod=marker matchpairs-=<:> matchpairs-=":"
+autocmd FileType vim setlocal foldmethod=marker matchpairs-=":"
 " python
 au BufNewFile,BufRead *.py setlocal tabstop=4 softtabstop=4 shiftwidth=4 textwidth=79
 " sh
@@ -508,9 +541,11 @@ autocmd BufWritePre *.sh call StripTrailingWhitespace()
 let g:go_fmt_command = 'goimports'    "Auto import go packages on save
 autocmd Filetype go setlocal tabstop=2 shiftwidth=2 softtabstop=4
 " markdown
-autocmd FileType markdown setlocal wrap
+autocmd FileType markdown setlocal wrap matchpairs+=<:>
 " scss
 au BufRead,BufNewFile *.scss set filetype=scss.css
+" html
+au  FileType html,xml setlocal matchpairs+=<:>
 " }}}
 
 " === local config === {{{
