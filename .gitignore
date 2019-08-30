@@ -1,6 +1,15 @@
+<<<<<<< HEAD
+/vim/.netrwhist
+/vim/autoload/
+/vim/plugged/
+/config/
+!/config/nvim/init.vim
+!/config/nvim/config/
+=======
 /vim/
 
 /config/
 !/config/nvim/init.vim
 !/config/nvim/config/
 !/config/nvim/autoload/
+>>>>>>> e1d7bcdfc4bd454bf3f6416355345dbf51d4defd

@@ -1,6 +1,6 @@
 # 1. setup the sources.list to "mirrors.aliyun.com"
-sudo sed -i "s/archive.ubuntu.com/mirrors.aliyun.com/g"  /etc/apt/sources.list
-sudo sed -i "s/security.ubuntu.com/mirrors.aliyun.com/g" /etc/apt/sources.list
+#sudo sed -i "s/archive.ubuntu.com/mirrors.aliyun.com/g"  /etc/apt/sources.list
+#sudo sed -i "s/security.ubuntu.com/mirrors.aliyun.com/g" /etc/apt/sources.list
 
 # 2. install tools
 # git tmux vim neovim fzy
