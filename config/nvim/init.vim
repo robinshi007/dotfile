@@ -281,7 +281,7 @@ augroup END
 "nnoremap <silent><C-e> :call <sid>defx_open({ 'split': v:true })<CR>
 "nnoremap <silent><LEADER>hf :call <sid>defx_open({ 'split': v:true, 'find_current_file': v:true })<CR>
 nnoremap <silent><C-e> :call <sid>defx_open({ 'split': v:true, 'find_current_file': v:true })<CR>
-let s:default_columns = 'indent:git:icons:filename'
+let s:default_columns = 'indent:git:icon:filename'
 
 function! s:setup_defx() abort
   call defx#custom#option('_', {
