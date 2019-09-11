@@ -57,7 +57,8 @@ if [ $OS_NAME == "Linux" ] || [ $OS_NAME == "Darwin" ];then
   alias egrep='egrep --color=auto'
 fi
 
-if [ -e /usr/share/terminfo/x/xterm+256color ] || [ $OS_NAME == 'Darwin' ]; then
+# apt install ncurses-term
+if [ -e /usr/share/terminfo/x/xterm+256color ] || [ -e /lib/terminfo/x/xterm+256color ] || [ $OS_NAME == 'Darwin' ]; then
   export TERM='xterm-256color'
 else
   export TERM='xterm-color'

@@ -202,6 +202,7 @@ function! ToggleBG()
   endif
 endfunction
 noremap <leader>bg :call ToggleBG()<CR>
+noremap <leader>cb :call StripTrailingWhitespace()<CR>
 
 " Function to source only if file exists {
 function! SourceIfExists(file)
