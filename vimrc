@@ -98,10 +98,11 @@ if has('gui_running')
 endif
 
 " directory
-"set noswapfile
-set directory=$VIMHOME/tmp//
-set backupdir=$VIMHOME/tmp//
-set undodir=$VIMHOME/tmp//
+set noswapfile
+set nobackup
+"set directory=$VIMHOME/tmp//
+"set nobackupdir=$VIMHOME/tmp//
+"set undodir=$VIMHOME/tmp//
 "set viewdir=$VIMHOME/tmp//
 
 " autogroup

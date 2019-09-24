@@ -51,3 +51,4 @@ fi
 
 # 5. git sync/update
 
+# 6. python/node/go support libraries/binaries
