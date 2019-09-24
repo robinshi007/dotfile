@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # version
 VERSION=1.12.8
 OS=linux

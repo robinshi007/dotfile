@@ -1,0 +1,10 @@
+{
+  "server":"ip address",
+  "server_port": <0>,
+  "local_address":"127.0.0.1",
+  "local_port":<0>,
+  "password":"<password>",
+  "timeout":300,
+  "method":"aes-256-gcm",
+  "workers":1
+}

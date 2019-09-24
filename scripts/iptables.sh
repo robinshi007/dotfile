@@ -1,4 +1,4 @@
-#! bin/bash
+#!/bin/bash
 #refers: https://gist.github.com/virtualstaticvoid/1024546
 #https://www.digitalocean.com/community/tutorials/iptables-essentials-common-firewall-rules-and-commands
 # * for docke , need to restart 'docker' service after run this script
