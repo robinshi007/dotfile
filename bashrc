@@ -146,6 +146,7 @@ fi
 if [ -d "$HOME/.local/bin" ]; then
     export PATH="$HOME/.local/bin:$PATH"
 fi
+# for mac os
 if [ $OS_NAME == "Darwin" ];then
   export PATH="/usr/local/opt/coreutils/libexec/gnubin":$PATH
 fi
@@ -155,12 +156,12 @@ fi
 if [[ -d /usr/local/go ]];then
     export GOROOT=/usr/local/go
     export PATH=$GOROOT/bin:$PATH
-    # go proxy
-    export GOPROXY=https://goproxy.cn
 fi
 if [[ $(type go 2>/dev/null) ]] && [ -d "$HOME/projects/go" ]; then
     export GOPATH=$HOME/projects/go
     export PATH=$GOPATH/bin:$PATH
+    # go proxy
+    export GOPROXY=https://goproxy.cn
 fi
 
 # 3rd party init
