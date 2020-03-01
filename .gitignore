@@ -1,3 +1,4 @@
 /vim/
 /config/
 !/config/nvim/init.vim
+!/config/nftables.conf

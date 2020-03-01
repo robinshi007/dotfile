@@ -19,19 +19,19 @@ function mkfolder(){
 # === setup folders and files
 mkfolder "$HOME/bin"
 mkfolder "$HOME/tmp"
-[ -d vim/autoload ] ||         mkdir -p vim/autoload
-[ -d config/nvim/autoload ] || mkdir -p config/nvim/autoload
+[ -d ~/dotfile/vim/autoload ] ||         mkdir -p ~/dotfile/vim/autoload
+[ -d ~/dotfile/config/nvim/autoload ] || mkdir -p ~/dotfile/config/nvim/autoload
 # download plug.vim to autoload path
 PLUG_VIM_URL="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-[ -f vim/autoload/plug.vim ] || ( cd vim/autoload/ && { curl -O $PLUG_VIM_URL; cd -;} )
-[ -f config/nvim/autoload/plug.vim ] || ( cd config/nvim/autoload/ &&  { curl -O $PLUG_VIM_URL; cd -;} )
+[ -f ~/dotfile/vim/autoload/plug.vim ] || ( cd ~/dotfile/vim/autoload/ && { curl -O $PLUG_VIM_URL; cd -;} )
+[ -f ~/dotfile/config/nvim/autoload/plug.vim ] || ( cd ~/dotfile/config/nvim/autoload/ &&  { curl -O $PLUG_VIM_URL; cd -;} )
 
 # ==== install basic packages
 
 if [ $OS_NAME == "Linux" ];then
   # setup debian/ubuntu
   echo "=> installing linux packages"
-  source setup_ubuntu.sh
+  source ~/dotfile/setup/setup_ubuntu.sh
 elif [ $OS_NAME == "Darwin" ];then
   echo "=> installing macos packages"
   # setup macos

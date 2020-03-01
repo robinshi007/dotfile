@@ -15,6 +15,3 @@ sudo chown -R root:root ~/downloads/go
 sudo mv go /usr/local
 
 cd ..
-
-#sudo tar -C /usr/local -xzf go$VERSION.$OS-$ARCH.tar.gz
-#curl -O "https://dl.google.com/go/go${GOLANG_VERSION}.linux-amd64.tar.gz"

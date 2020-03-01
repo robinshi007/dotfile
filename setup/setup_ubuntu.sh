@@ -11,44 +11,20 @@ sudo apt install software-properties-common -y
 if ! type nvim &>/dev/null;then
   sudo add-apt-repository ppa:neovim-ppa/stable -y
   sudo apt update
-  sudo apt install git neovim vim fzy -y
+  sudo apt install tmux vim git neovim fzy -y
   sudo apt install python-pip python-dev python3-dev python3-pip -y
   if ! type rg &>/dev/null;then
-    RIPGREP_DEB="ripgrep_0.10.0_amd64.deb"
+    RIPGREP_DEB="ripgrep_11.0.2_amd64.deb"
     curl -LO https://github.com/BurntSushi/ripgrep/releases/download/0.10.0/$RIPGREP_DEB
     sudo dpkg -i $RIPGREP_DEB
     rm $RIPGREP_DEB
   fi
 fi
 
-# 3. install runtime
+# 3. install runtime(docker, golang, node, python3 and others)
 # node and npm
 if ! type node &>/dev/null;then
   echo "=> installing nodejs"
-  curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+  curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
   sudo apt install -y nodejs
 fi
-
-if ! type go &>/dev/null;then
-  GOLANG_VERSION="1.12.linux-amd64"
-  echo "=> installing go"
-  cd ~/tmp
-  curl -O https://dl.google.com/go/go$GOLANG_VERSION.tar.gz
-
-  if [ -d /usr/local/go ];then
-    if [ -d /usr/local/go_bak ];then
-      sudo rm -rf /usr/local/go_bak
-    fi
-    sudo mv /usr/local/go /usr/local/go_bak
-  fi
-  tar xf go$GOLANG_VERSION.tar.gz
-  sudo chown -R root:root ~/tmp/go
-  sudo mv go /usr/local
-  cd -
-fi
-
-# 4. install docker + systemd init scripts
-
-# 5. git sync/update
-
-# 6. python/node/go support libraries/binaries
