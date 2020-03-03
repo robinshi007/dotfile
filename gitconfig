@@ -12,7 +12,7 @@ lol=log --graph --decorate --pretty=oneline --abbrev-commit --all
 [user]
 name=Robin Shi
 email=robinshi@outlook.com
-[http]
-	proxy = http://127.0.0.1:8118
-[https]
-	proxy = http://127.0.0.1:8118
+#[http]
+#	proxy = http://127.0.0.1:8118
+#[https]
+#	proxy = http://127.0.0.1:8118
