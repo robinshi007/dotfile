@@ -154,7 +154,6 @@ if [ $OS_NAME == "Darwin" ];then
     export PATH="/usr/local/opt/coreutils/libexec/gnubin":$PATH
   fi
   ulimit -n 10000  # for limit of file descriptors
-  ulimit -u 2048   # for limit of process
 fi
 if [ -d "$HOME/.cargo/bin" ]; then
     export PATH="$HOME/.cargo/bin:$PATH"
