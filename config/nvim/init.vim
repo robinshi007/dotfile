@@ -75,6 +75,7 @@ Plug 'elzr/vim-json'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'posva/vim-vue'
+Plug 'jparise/vim-graphql'
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'rust-lang/rust.vim'
 
@@ -94,7 +95,7 @@ call plug#end()
 syntax enable
 filetype indent on
 
-set fileformats=unix,dos       " use unix for new files
+set fileformats=unix,dos       " use unix then dos for reading file
 set nomodeline                 " no modeline for safety
 set novisualbell
 set clipboard=unnamed
@@ -293,8 +294,8 @@ function! s:setup_defx() abort
         \ })
 
   call defx#custom#column('filename', {
-        \ 'min_width': 30,
-        \ 'max_width': 30,
+        \ 'min_width': 40,
+        \ 'max_width': 40,
         \ })
 
   call s:defx_open({ 'dir': expand('<afile>') })

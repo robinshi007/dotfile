@@ -41,6 +41,8 @@ export LANG="en_US"
 export EDITOR='vim'
 export OS_NAME=$(uname -s)
 export GO111MODULE=on
+# disable chsh -s /bin/zsh warning message
+export BASH_SILENCE_DEPRECATION_WARNING=1
 
 # == dircolor
 if [ $OS_NAME == "Linux" ];then
@@ -146,8 +148,13 @@ fi
 if [ -d "$HOME/.local/bin" ]; then
     export PATH="$HOME/.local/bin:$PATH"
 fi
+# for mac os
 if [ $OS_NAME == "Darwin" ];then
-  export PATH="/usr/local/opt/coreutils/libexec/gnubin":$PATH
+  if [ -d "/usr/local/opt/coreutils/libexec/gnubin" ];then
+    export PATH="/usr/local/opt/coreutils/libexec/gnubin":$PATH
+  fi
+  ulimit -n 10000  # for limit of file descriptors
+  ulimit -u 2048   # for limit of process
 fi
 if [ -d "$HOME/.cargo/bin" ]; then
     export PATH="$HOME/.cargo/bin:$PATH"
@@ -159,6 +166,8 @@ fi
 if [[ $(type go 2>/dev/null) ]] && [ -d "$HOME/projects/go" ]; then
     export GOPATH=$HOME/projects/go
     export PATH=$GOPATH/bin:$PATH
+    # go proxy
+    export GOPROXY=https://goproxy.cn
 fi
 
 # 3rd party init
@@ -169,7 +178,9 @@ if [[ -d "$HOME/.nvm" ]]; then
   [[ -s "$NVM_DIR/bash_completion" ]] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 fi
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+if [ $OS_NAME == "Darwin" ];then
+  alias free="top -l 1 -s 0 | awk ' /Processes/ || /PhysMem/ || /Load Avg/{print}'"
+fi
 
 # local custom
 if [ -f ~/.bash_local ]; then

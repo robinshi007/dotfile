@@ -4,6 +4,7 @@ status=auto
 [core]
 editor=vim
 quotepath=false
+autocrlf=input
 [alias]
 st=status
 ci=commit
