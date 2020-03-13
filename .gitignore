@@ -2,3 +2,4 @@
 /config/
 !/config/nvim/init.vim
 !/config/nftables.conf
+!/config/shadowsocks.json
