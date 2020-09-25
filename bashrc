@@ -139,8 +139,26 @@ mkcd()
     mkdir -p "$1"
     cd "$1"
 }
-
-
+# git checkout next commit
+function gcn() {
+  git log --reverse --pretty=%H master | grep -A 1 $(git rev-parse HEAD) | tail -n1 | xargs git checkout
+}
+# git checkout previouscommit
+function gcp() {
+  git checkout HEAD^1
+}
+# git diff last two commits
+function gdl(){
+  git diff HEAD^1..HEAD
+}
+# git shortlog --summary
+function gsl(){
+  git shortlog -s -n
+}
+# git log one line
+function gll(){
+  git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+}
 # == PATH
 if [ -d "$HOME/bin" ]; then
     export PATH="$HOME/bin:$PATH"
@@ -153,6 +171,7 @@ if [ $OS_NAME == "Darwin" ];then
   if [ -d "/usr/local/opt/coreutils/libexec/gnubin" ];then
     export PATH="/usr/local/opt/coreutils/libexec/gnubin":$PATH
   fi
+  export PATH="$HOME/Library/Python/3.7/bin":$PATH
   ulimit -n 10000  # for limit of file descriptors
 fi
 if [ -d "$HOME/.cargo/bin" ]; then
@@ -183,6 +202,10 @@ fi
 
 # local custom
 if [ -f ~/.bash_local ]; then
-    . ~/.bash_local
+  . ~/.bash_local
 fi
 
+
+#if [ -f ~/.fzf.bash ]; then
+#  . ~/.fzf.bash
+#fi

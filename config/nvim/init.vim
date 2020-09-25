@@ -1,6 +1,6 @@
 " === todos ===
 " neovim plugins need python3.5+ and pip3 install neovim
-" vim-plug > nerdtree > fzf > ncm2 > ale > neoformat > airline
+" vim-plug > defx > fzf > coc > airline
 " refer: https://github.com/kristijanhusak/neovim-config
 "
 "  === spec === {{{
@@ -9,8 +9,6 @@
 "  os: win linux macos
 "  profile: basic(text editor) advanced(ide: [syntax, indent, comment,
 "  autocmd, auto-complete, format, linter ])
-"
-"  only one config file for simplification
 " }}}
 
 " === setup === {{{
@@ -39,11 +37,16 @@ endif
 " }}}
 
 " === plugged plugins === {{{
+if empty(glob('~/.config/nvim/autoload/plug.vim'))
+    silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall --sync | source ~/.config/nvim/init.vim
+endif
 call plug#begin($HOME.'/.config/nvim/plugged')
 " basics
 Plug 'tpope/vim-repeat'           " using . to repeat last action
 Plug 'tpope/vim-surround'         " cs]<div>, cst', ds}, ysiw], yss)
-Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugin' }
+Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
 "Plug 'kristijanhusak/defx-icons'
 Plug 'manasthakur/vim-commentor'  " using gc to toggle
 Plug 'Raimondi/delimitMate'
@@ -73,18 +76,15 @@ Plug 'othree/html5.vim'
 Plug 'cakebaker/scss-syntax.vim'
 Plug 'elzr/vim-json'
 Plug 'pangloss/vim-javascript'
+Plug 'leafgarland/typescript-vim'
 Plug 'mxw/vim-jsx'
 Plug 'posva/vim-vue'
 Plug 'jparise/vim-graphql'
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'rust-lang/rust.vim'
 
-" autocomplete
-Plug 'neoclide/coc.nvim', { 'do': 'yarn install --frozen-lockfile'}
-" linter, fixer
-Plug 'w0rp/ale'
-" formater
-Plug 'sbdchd/neoformat'
+" autocomplete, linter, formater
+Plug 'neoclide/coc.nvim', { 'branch': 'release'}
 " snip
 Plug 'honza/vim-snippets'
 call plug#end()
@@ -259,7 +259,7 @@ nmap <LEADER>v V`}
 vnoremap <LEADER>y "+y   " copy to system clipboard
 nmap <LEADER><LEADER> <C-^>
 nmap <silent> <LEADER>ev :e $MYVIMRC<CR>
-nmap <silent> <LEADER>sv :source $MYVIMRC<CR>
+nmap <silent> <LEADER>sv :source $MYVIMRC \|echom 'NeoVim config reloaded'<CR>
 nmap <LEADER>es :sp %%
 nmap <LEADER>l :set list!<CR>
 nmap <LEADER>ss :mksession<CR>
@@ -274,121 +274,12 @@ noremap <LEADER>bd :%bd\|e#<CR>
 " }}}
 
 " === plugins === {{{
-" defx {{{
-augroup vimrc_defx
-  autocmd!
-  autocmd FileType defx call s:defx_mappings()        " Defx mappingsjj
-  autocmd VimEnter * call s:setup_defx()
-augroup END
-"nnoremap <silent><C-e> :call <sid>defx_open({ 'split': v:true })<CR>
-"nnoremap <silent><LEADER>hf :call <sid>defx_open({ 'split': v:true, 'find_current_file': v:true })<CR>
-nnoremap <silent><C-e> :call <sid>defx_open({ 'split': v:true, 'find_current_file': v:true })<CR>
-let s:default_columns = 'indent:git:icon:filename'
-
-function! s:setup_defx() abort
-  call defx#custom#option('_', {
-        \ 'columns': s:default_columns,
-        \ 'show_ignored_files': 1,
-        \ 'toggle': 1,
-        \ 'resume': 1,
-        \ })
-
-  call defx#custom#column('filename', {
-        \ 'min_width': 40,
-        \ 'max_width': 40,
-        \ })
-
-  call s:defx_open({ 'dir': expand('<afile>') })
-endfunction
-
-function! s:get_project_root() abort
-  let l:git_root = ''
-  let l:path = expand('%:p:h')
-  let l:cmd = systemlist('cd '.l:path.' && git rev-parse --show-toplevel')
-  if !v:shell_error && !empty(l:cmd)
-    let l:git_root = fnamemodify(l:cmd[0], ':p:h')
-  endif
-
-  if !empty(l:git_root)
-    return l:git_root
-  endif
-
-  return getcwd()
-endfunction
-
-function! s:defx_open(...) abort
-  let l:opts = get(a:, 1, {})
-  let l:path = get(l:opts, 'dir', s:get_project_root())
-
-  if !isdirectory(l:path) || &filetype ==? 'defx'
-    return
-  endif
-
-  let l:args = '-winwidth=42 -direction=topleft'
-
-  if has_key(l:opts, 'split')
-    let l:args .= ' -split=vertical'
-  endif
-
-  if has_key(l:opts, 'find_current_file')
-    if &filetype ==? 'defx'
-      return
-    endif
-    call execute(printf('Defx %s -search=%s %s', l:args, expand('%:p'), l:path))
-  else
-    call execute(printf('Defx -toggle %s %s', l:args, l:path))
-    call execute('wincmd p')
-  endif
-
-  return execute("norm!\<C-w>=")
-endfunction
-
-function! s:defx_context_menu() abort
-  let l:actions = ['new_multiple_files', 'rename', 'copy', 'move', 'paste', 'remove']
-  let l:selection = confirm('Action?', "&Add file/directory\n&Rename\n&Copy\n&Move\n&Paste\n&Delete")
-  silent exe 'redraw'
-
-  return feedkeys(defx#do_action(l:actions[l:selection - 1]))
-endfunction
-
-function! s:defx_toggle_tree() abort
-  if defx#is_directory()
-    return defx#do_action('open_or_close_tree')
-  endif
-  return defx#do_action('drop')
-endfunction
-
-function! s:defx_mappings() abort
-  nnoremap <silent><buffer>m :call <sid>defx_context_menu()<CR>
-  nnoremap <silent><buffer><expr> o <sid>defx_toggle_tree()
-  nnoremap <silent><buffer><expr> O defx#do_action('open_tree_recursive')
-  nnoremap <silent><buffer><expr> <CR> <sid>defx_toggle_tree()
-  nnoremap <silent><buffer><expr> C defx#is_directory() ? defx#do_action('multi', ['open', 'change_vim_cwd']) : 'C'
-  nnoremap <silent><buffer><expr> s defx#do_action('open', 'botright vsplit')
-  nnoremap <silent><buffer><expr> R defx#do_action('redraw')
-  nnoremap <silent><buffer><expr> U defx#do_action('multi', [['cd', '..'], 'change_vim_cwd'])
-  nnoremap <silent><buffer><expr> H defx#do_action('toggle_ignored_files')
-  nnoremap <silent><buffer><expr> <Space> defx#do_action('toggle_select') . 'j'
-  nnoremap <silent><buffer><expr> j line('.') == line('$') ? 'gg' : 'j'
-  nnoremap <silent><buffer><expr> k line('.') == 1 ? 'G' : 'k'
-  nnoremap <silent><buffer> J :call search('')<CR>
-  nnoremap <silent><buffer> K :call search('', 'b')<CR>
-  nnoremap <silent><buffer><expr> yy defx#do_action('yank_path')
-  nnoremap <silent><buffer><expr> q defx#do_action('quit')
-  nnoremap <silent><buffer><expr> tt defx#do_action("toggle_columns", "'.s:default_columns.':size")
-endfunction
-" }}}
+runtime! partials/defx.vim
+runtime! partials/fzf.vim
+runtime! partials/coc.vim
+"runtime! partials/ale.vim
 " gitgutter {{{
 let g:gitgutter_max_signs=1000
-" }}}
-" fzf {{{
-if WINDOWS()
-  let $FZF_DEFAULT_OPTS=' --no-height'
-else
-  let $FZF_DEFAULT_OPTS='--height 30% --layout=reverse --border --color dark,hl:33,hl+:37,fg+:235,bg+:136,fg+:254 --color info:254,prompt:37,spinner:108,pointer:235,marker:235'
-endif
-let $FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*" --glob "!node_modules/*"'
-nnoremap <C-p> :Files<CR>
 " }}}
 " Vim Easy Align {{{
 xmap ga <Plug>(EasyAlign)
@@ -422,110 +313,7 @@ vmap <LEADER>F <Plug>CtrlSFVwordPath
 nmap <LEADER>ft :CtrlSFToggle<CR>
 let g:ctrlsf_auto_close=0
 " }}}
-" coc {{{
-set completeopt-=preview      "Disable preview window for autocompletion
-set pumheight=15               "Maximum number of entries in autocomplete popup
 
-augroup vimrc_autocomplete
-  autocmd CursorHold * silent call CocActionAsync('highlight')
-  autocmd CursorHoldI * call CocActionAsync('showSignatureHelp')
-augroup END
-
-let g:coc_user_config = {
-      \ 'diagnostic.enable': v:false,
-      \ 'prettier.printWidth': 100,
-      \ 'prettier.singleQuote': v:true,
-      \ }
-
-let g:coc_global_extensions = [
-      \ 'coc-css',
-      \ 'coc-html',
-      \ 'coc-json',
-      \ 'coc-pyls',
-      \ 'coc-prettier',
-      \ 'coc-tsserver',
-      \ 'coc-snippets',
-      \ 'coc-vimlsp',
-      \ 'coc-rls',
-      \ 'coc-go',
-      \ ]
-
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-imap <expr> <CR> pumvisible() ? "\<C-y>" : "\<Plug>delimitMateCR"
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-vmap <leader>lf <Plug>(coc-format-selected)
-nmap <leader>lf <Plug>(coc-format-selected)
-nmap <leader>lF <Plug>(coc-format)
-nmap <leader>ld <Plug>(coc-definition)
-nmap <leader>lc <Plug>(coc-declaration)
-nmap <leader>lg <Plug>(coc-implementation)
-nmap <leader>lu <Plug>(coc-references)
-nmap <leader>lr <Plug>(coc-rename)
-nmap <leader>lq <Plug>(coc-fix-current)
-nmap <silent><leader>lh :call CocAction('doHover')<CR>
-vmap <leader>la <Plug>(coc-codeaction-selected)
-nmap <leader>la <Plug>(coc-codeaction-selected)
-inoremap <silent><C-Space> <C-x><C-o>
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-"set wildoptions=pum
-set wildignore=*.o,*.obj,*~                                                     "stuff to ignore when tab completing
-set wildignore+=*.git*
-set wildignore+=.pyc,.swp
-set wildignore+=*sass-cache*
-set wildignore+=*__pycache__*
-set wildignore+=*cache*
-set wildignore+=*logs*
-set wildignore+=*node_modules*
-set wildignore+=*DS_Store*
-set wildignore+=log/**
-set wildignore+=tmp/**
-set wildignore+=*.png,*.jpg,*.gif
-" }}}
-" ale {{{
-" Check Python files with flake8 and pylint.
-"let g:ale_sign_column_always=1
-let g:ale_sign_error = '>>'
-let g:ale_sign_warning = '--'
-let g:ale_echo_msg_error_str='E'
-let g:ale_echo_msg_warning_str='W'
-let g:ale_echo_msg_format='[%linter%] %s [%severity%]'
-let g:ale_lint_delay=1000
-let g:ale_open_list=0
-"let g:ale_completion_enabled=1
-"let g:ale_linters_explicit=1
-let g:ale_lint_on_enter=0
-let g:ale_lint_on_text_changed='never'
-let g:ale_lint_on_save=1
-"let g:ale_fix_on_save=1
-" use quickfix list instead of the loclist
-"let g:ale_set_loclist=0
-"let g:ale_set_quickfix=1
-
-let b:ale_linters = {
-      \ 'python': ['pyls', 'flake8'],
-      \ 'javascript': ['eslint'],
-      \ 'go': ['golint','go vet'],
-      \ 'rust': ['rls'],
-      \}
-let b:ale_fixers = {
-      \ 'javascript': ['eslint'],
-      \ 'python': ['autopep8', 'yapf'],
-      \ 'rust': ['rustfmt'],
-      \}
-let g:ale_python_pyls_use_global=1
-let g:ale_rust_rls_toolchain='stable'
-nmap ]a <Plug>(ale_next_wrap)
-nmap [a <Plug>(ale_previous_wrap)
-nmap <leader>d <Plug>(ale_fix)
-" }}}
 " airline {{{
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#ale#enabled=1

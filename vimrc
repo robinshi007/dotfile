@@ -142,7 +142,7 @@ nmap <silent> <LEADER>h :set hlsearch!<CR>
 " plugins
 " === NERDTree ===
 nmap <C-e> :NERDTreeToggle<CR>
-let NERDTreeIgnore=["\.git", "\.exe"]
+let NERDTreeIgnore=['^\.git$', '\.exe$', '\.egg-info$']
 let NERDTreeDirArrows=0
 let NERDTreeQuitOnOpen=1
 let NERDTreeShowHidden=1

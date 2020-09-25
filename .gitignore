@@ -1,4 +1,6 @@
 /vim/
 /config/
 !/config/nvim/init.vim
+!/config/nvim/setup_coc_extensions.sh
+!/config/nvim/partials
 !/config/nftables.conf
