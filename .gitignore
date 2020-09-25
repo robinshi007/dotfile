@@ -4,3 +4,4 @@
 !/config/nvim/setup_coc_extensions.sh
 !/config/nvim/partials
 !/config/nftables.conf
+!/config/shadowsocks.json
