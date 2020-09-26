@@ -320,6 +320,9 @@ let g:airline#extensions#ale#enabled=1
 let g:airline_theme='solarized'
 let g:airline_solarized_bg='dark'
 " }}}
+" vim-go {{{
+let g:go_def_mapping_enabled = 0
+" }}}
 " === languages === {{{
 " vim
 autocmd FileType vim setlocal foldmethod=marker matchpairs-=":"

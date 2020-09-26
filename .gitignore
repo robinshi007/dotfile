@@ -1,7 +1,10 @@
 /vim/
-/config/
-!/config/nvim/init.vim
-!/config/nvim/setup_coc_extensions.sh
-!/config/nvim/partials
+!/config/
+/config/*
+!/config/nvim
 !/config/nftables.conf
 !/config/shadowsocks.json
+/config/nvim/*
+!/config/nvim/init.vim
+!/config/nvim/setup_coc_extensions.sh
+!/config/nvim/partials/
