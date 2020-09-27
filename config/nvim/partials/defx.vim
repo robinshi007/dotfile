@@ -5,37 +5,32 @@ augroup vimrc_defx
   autocmd FileType defx call s:defx_mappings()        " Defx mappings
   autocmd VimEnter * call s:setup_defx()
 augroup END
-"nnoremap <silent><C-e> :call <sid>defx_open({ 'split': v:true })<CR>
-"nnoremap <silent><LEADER>hf :call <sid>defx_open({ 'split': v:true, 'find_current_file': v:true })<CR>
-nnoremap <silent><C-e> :call <sid>defx_open({ 'split': v:true, 'find_current_file': v:true })<CR>
-let s:default_columns = 'indent:git:icon:filename'
+" nnoremap <silent><C-e> :call <sid>defx_open({ 'split': v:true, 'find_current_file': v:true })<CR>
+nnoremap <silent><C-e> :call <sid>defx_open({ 'split': v:true })<CR>
+let s:default_columns = 'indent:git:icons:filename'
 
 function! s:setup_defx() abort
   call defx#custom#option('_', {
         \ 'columns': s:default_columns,
-        \ 'show_ignored_files': 1,
         \ 'toggle': 1,
         \ 'resume': 1,
         \ 'ignored_files':
-        \     '.git,.hg,.svn,__pycache__,.sass-cache,.DS_Store'
-        \   . ',*.egg-info,*.pyc,*.exe'
+        \     '.git,.hg,.svn,__pycache__,.sass-cache,.DS_Store,*.egg-info'
+        \   . ',*.pyc,*.exe'
         \ })
 
   call defx#custom#column('filename', {
-        \ 'min_width': 40,
-        \ 'max_width': 40,
+        \ 'min_width': 36,
+        \ 'max_width': 36,
         \ })
-  call defx#custom#column('git', {
-        \   'indicators': {
-        \     'Modified'  : '•',
-        \     'Staged'    : '✚',
-        \     'Untracked' : 'ᵁ',
-        \     'Renamed'   : '≫',
-        \     'Unmerged'  : '≠',
-        \     'Ignored'   : 'ⁱ',
-        \     'Deleted'   : '✖',
-        \     'Unknown'   : '⁇'
-        \   }
+  call defx#custom#column('git', 'indicators', {
+        \ 'Modified'  : '✹',
+        \ 'Staged'    : '✚',
+        \ 'Untracked' : '✭',
+        \ 'Renamed'   : '➜',
+        \ 'Unmerged'  : '═',
+        \ 'Deleted'   : '✖',
+        \ 'Unknown'   : '?'
         \ })
 
   call s:defx_open({ 'dir': expand('<afile>') })
@@ -64,7 +59,7 @@ function! s:defx_open(...) abort
     return
   endif
 
-  let l:args = '-winwidth=42 -direction=topleft'
+    let l:args = '-winwidth=36 -direction=topleft'
 
   if has_key(l:opts, 'split')
     let l:args .= ' -split=vertical'
@@ -74,13 +69,12 @@ function! s:defx_open(...) abort
     if &filetype ==? 'defx'
       return
     endif
-    call execute(printf('Defx %s -search=%s %s', l:args, expand('%:p'), l:path))
+    call execute(printf('Defx %s -toggle -focus -search=%s %s', l:args, expand('%:p'), l:path))
   else
-    call execute(printf('Defx -toggle %s %s', l:args, l:path))
-    call execute('wincmd p')
+    call execute(printf('Defx -toggle -focus %s %s', l:args, l:path))
   endif
 
-  return execute("norm!\<C-w>=")
+  " return execute("norm!\<C-w>=")
 endfunction
 
 function! s:defx_context_menu() abort
@@ -99,6 +93,7 @@ function! s:defx_toggle_tree() abort
 endfunction
 
 function! s:defx_mappings() abort
+  setlocal number
   nnoremap <silent><buffer>m :call <sid>defx_context_menu()<CR>
   nnoremap <silent><buffer><expr> o <sid>defx_toggle_tree()
   nnoremap <silent><buffer><expr> O defx#do_action('open_tree_recursive')
@@ -111,8 +106,6 @@ function! s:defx_mappings() abort
   nnoremap <silent><buffer><expr> <Space> defx#do_action('toggle_select') . 'j'
   nnoremap <silent><buffer><expr> j line('.') == line('$') ? 'gg' : 'j'
   nnoremap <silent><buffer><expr> k line('.') == 1 ? 'G' : 'k'
-  nnoremap <silent><buffer> J :call search('')<CR>
-  nnoremap <silent><buffer> K :call search('', 'b')<CR>
   nnoremap <silent><buffer><expr> yy defx#do_action('yank_path')
   nnoremap <silent><buffer><expr> q defx#do_action('quit')
   nnoremap <silent><buffer><expr> tt defx#do_action("toggle_columns", "'.s:default_columns.':size")

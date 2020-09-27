@@ -19,17 +19,14 @@ let g:coc_user_config = {
 let g:coc_global_extensions = [
       \ 'coc-css',
       \ 'coc-html',
-      \ 'coc-emmet',
       \ 'coc-json',
       \ 'coc-prettier',
       \ 'coc-tsserver',
       \ 'coc-snippets',
       \ 'coc-vimlsp',
       \ 'coc-python',
-      \ 'coc-rls',
       \ 'coc-go',
       \ ]
-
 let s:snippets = {}
 function s:snippets_check() abort
   let word = matchlist(getline('.')[0:(col('.') - 1)], '\k*$')
@@ -71,36 +68,44 @@ function! s:show_documentation()
 endfunction
 
 imap <silent><expr> <TAB> <SID>tab_completion()
-"imap <expr> <CR> pumvisible() ? "\<C-y>" : "\<Plug>delimitMateCR"
-imap <silent><expr> <CR> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+"inoremap <slient><expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 imap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-vmap <leader>gf <Plug>(coc-format-selected)
-nmap <leader>gf <Plug>(coc-format-selected)
-nmap <leader>gF <Plug>(coc-format)
-
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+" Remap keys for gotos
 nmap <leader>gd <Plug>(coc-definition)
 nmap <leader>ge <Plug>(coc-declaration)
 nmap <leader>gy <Plug>(coc-type-definition)
 nmap <leader>gi <Plug>(coc-implementation)
 nmap <leader>gr <Plug>(coc-references)
-nmap <leader>cr <Plug>(coc-rename)
-
+" format
+vmap <leader>gf <Plug>(coc-format-selected)
+nmap <leader>gf <Plug>(coc-format-selected)
+nmap <leader>gF <Plug>(coc-format)
+" rename & show help
+nmap <leader>rn <Plug>(coc-rename)
 nmap <silent><leader>gh :call <SID>show_documentation()<CR>
 nmap <leader>cq <Plug>(coc-fix-current)
 vmap <leader>ca <Plug>(coc-codeaction-selected)
 nmap <leader>ca <Plug>(coc-codeaction-selected)
-"nmap <silent> [g <Plug>(coc-diagnostic-prev)
-"nmap <silent> ]g <Plug>(coc-diagnostic-next)
-nnoremap <silent> [g :call CocAction('diagnosticPrevious')<CR>
-nnoremap <silent> ]g :call CocAction('diagnosticNext')<CR>
+" Use `[c` and `]c` to navigate diagnostics
+" nnoremap <silent> [g <Plug>(coc-diagnostic-prev)
+" nnoremap <silent> ]g <Plug>(coc-diagnostic-next)
+nnoremap <silent>[g :call CocAction('diagnosticPrevious')<CR>
+nnoremap <silent>]g :call CocAction('diagnosticNext')<CR>
 " list all command available
 nnoremap <leader>cc :<C-u>CocList commands<CR>
 " list errors
 nnoremap <leader>cl :<C-u>CocDiagnostics<CR>
 " restart tsserver
-nnoremap <leader>cR :<C-u>CocRestart<CR>
+nnoremap <silent><leader>cR :<C-u>CocRestart<CR>
 " manage extensions
 nnoremap <leader>cx :<C-u>CocList extensions<CR>
+" Find symbol of current document
+ nnoremap <silent> <leader>co  :<C-u>CocList outline<cr>
+" " Search workspace symbols
+ nnoremap <silent> <leader>cs  :<C-u>CocList -I symbols<cr>
 
 "set wildoptions=pum
 set wildignore=*.o,*.obj,*~                                                     "stuff to ignore when tab completing

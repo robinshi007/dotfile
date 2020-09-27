@@ -1,4 +1,20 @@
 " fzf {{{
+let g:fzf_colors = {
+      \ 'fg':      ['fg', 'Normal'],
+      \ 'bg':      ['bg', 'Normal'],
+      \ 'hl':      ['fg', 'IncSearch'],
+      \ 'fg+':     ['fg', 'Title', 'CursorColumn', 'Normal'],
+      \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+      \ 'hl+':     ['fg', 'Title'],
+      \ 'info':    ['fg', 'PreProc'],
+      \ 'border':  ['fg', 'Ignore'],
+      \ 'prompt':  ['fg', 'Conditional'],
+      \ 'pointer': ['fg', 'Exception'],
+      \ 'marker':  ['fg', 'Keyword'],
+      \ 'spinner': ['fg', 'Label'],
+      \ 'header':  ['fg', 'Comment'] 
+      \ }
+let g:fzf_buffers_jump=1
 if WINDOWS()
   let $FZF_DEFAULT_OPTS=' --no-height'
 else
@@ -6,4 +22,5 @@ else
 endif
 let $FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*" --glob "!node_modules/*"'
 nnoremap <C-p> :Files<CR>
+nnoremap <C-g> :Buffers<CR>
 " }}}

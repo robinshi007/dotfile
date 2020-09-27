@@ -207,5 +207,5 @@ fi
 
 
 #if [ -f ~/.fzf.bash ]; then
-#  . ~/.fzf.bash
+  #. ~/.fzf.bash
 #fi

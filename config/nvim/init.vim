@@ -2,18 +2,16 @@
 " neovim plugins need python3.5+ and pip3 install neovim
 " vim-plug > defx > fzf > coc > airline
 " refer: https://github.com/kristijanhusak/neovim-config
-"
 "  === spec === {{{
 "  for neovim only, not for vim
 "  cross os, cross profile
 "  os: win linux macos
-"  profile: basic(text editor) advanced(ide: [syntax, indent, comment,
-"  autocmd, auto-complete, format, linter ])
+"  profile: basic(text editor)[syntax, indent, comment, autocmd]
+"  advanced(ide: [auto-complete, snippet, format, linter])
 " }}}
-
 " === setup === {{{
-" neovim plugins need python3.5+ and `pip3 install --upgrade pynvim`
-" `npm install -g eslint prettier
+" neovim plugins need python3.5+ and `pip3 install --upgrade pynvim neovim jedi`
+" `npm install -g eslint prettier`
 " }}}
 
 " === environment === {{{
@@ -24,7 +22,7 @@ function! LINUX()
   return has('unix') && !has('macunix') && !has('win32unix')
 endfunction
 function! WINDOWS()
-  return  (has('win32') || has('win64'))
+  return (has('win32') || has('win64'))
 endfunction
 
 set nocompatible     " must be the first line
@@ -45,21 +43,23 @@ endif
 call plug#begin($HOME.'/.config/nvim/plugged')
 " basics
 Plug 'tpope/vim-repeat'           " using . to repeat last action
-Plug 'tpope/vim-surround'         " cs]<div>, cst', ds}, ysiw], yss)
+Plug 'tpope/vim-surround'         " cs]<div>, cst', ds}, ysiw], yss), select->'S'
 Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
-"Plug 'kristijanhusak/defx-icons'
-Plug 'manasthakur/vim-commentor'  " using gc to toggle
-Plug 'Raimondi/delimitMate'
+Plug 'kristijanhusak/defx-git'
+Plug 'kristijanhusak/defx-icons'
+Plug 'tpope/vim-commentary'
 Plug 'junegunn/vim-easy-align'
 Plug 'Yggdroot/indentLine'
+Plug 'rhysd/accelerated-jk'
 Plug 'easymotion/vim-easymotion'
+Plug 'mg979/vim-visual-multi'
 Plug 'osyo-manga/vim-anzu'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'dyng/ctrlsf.vim'
-Plug 'AndrewRadev/tagalong.vim'
-Plug 'majutsushi/tagbar'
+"Plug 'majutsushi/tagbar'
 Plug 'airblade/vim-gitgutter'
+
 " UI
 if WINDOWS()
   Plug 'frankier/neovim-colors-solarized-truecolor-only'
@@ -81,7 +81,6 @@ Plug 'mxw/vim-jsx'
 Plug 'posva/vim-vue'
 Plug 'jparise/vim-graphql'
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
-Plug 'rust-lang/rust.vim'
 
 " autocomplete, linter, formater
 Plug 'neoclide/coc.nvim', { 'branch': 'release'}
@@ -119,8 +118,8 @@ if has('multi_byte')
     let &termencoding = &encoding
   endif
   " Encoding used for writing files.
-  setglobal fileencoding=utf-8
-  set fileencodings=ucs-bom,utf-8,gb18030,cp936,latin1
+  set fileencoding=utf-8
+  set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
 endif
 "}}}
 
@@ -188,22 +187,11 @@ function! StripTrailingWhitespace()
   let l:chars = col("$")
   %s/\s\+$//e
   if (line("'Z") != line(".")) || (l:chars != col("$"))
-    echo "Trailing whitespace stripped\n"
+    echom "Trailing whitespace is stripped"
   endif
   normal `Z
 endfunction
-function! ToggleBG()
-  let s:tbg = &background
-  if s:tbg == "dark"
-    set background=light
-    let g:airline_solarized_bg='light'
-  else
-    set background=dark
-    let g:airline_solarized_bg='dark'
-  endif
-endfunction
-noremap <leader>bg :call ToggleBG()<CR>
-noremap <leader>cb :call StripTrailingWhitespace()<CR>
+noremap <silent> <leader>st :call StripTrailingWhitespace()<CR>
 
 " Function to source only if file exists {
 function! SourceIfExists(file)
@@ -242,10 +230,17 @@ nnoremap gV `[v`]      " highlight last inserted text
 vnoremap < <gv
 vnoremap > >gv
 " WINDOWS
-nnoremap <C-h> <C-W>h
-nnoremap <C-j> <C-W>j
-nnoremap <C-k> <C-W>k
-nnoremap <C-l> <C-W>l
+nnoremap <silent> <C-h> <C-W>h
+nnoremap <silent> <C-j> <C-W>j
+nnoremap <silent> <C-k> <C-W>k
+nnoremap <silent> <C-l> <C-W>l
+" Maps Alt-[h,j,k,l] to resizing a window split
+" nnoremap <silent> <S-h> <C-w><
+" nnoremap <silent> <S-j> <C-W>-
+" nnoremap <silent> <S-k> <C-W>+
+" nnoremap <silent> <S-l> <C-w>>
+ nnoremap <silent> <S-h> :vertical resize -8<CR>
+ nnoremap <silent> <S-l> :vertical resize +8<CR>
 " keep search result at the center of the screen
 nnoremap <silent> n nzz
 nnoremap <silent> N Nzz
@@ -258,8 +253,8 @@ nmap <LEADER>a ggVG"
 nmap <LEADER>v V`}
 vnoremap <LEADER>y "+y   " copy to system clipboard
 nmap <LEADER><LEADER> <C-^>
-nmap <silent> <LEADER>ev :e $MYVIMRC<CR>
-nmap <silent> <LEADER>sv :source $MYVIMRC \|echom 'NeoVim config reloaded'<CR>
+nnoremap <silent> <LEADER>ev :e $MYVIMRC<CR>
+nnoremap <silent> <LEADER>sv :source $MYVIMRC\|echom 'NeoVim config reloaded!'<CR>
 nmap <LEADER>es :sp %%
 nmap <LEADER>l :set list!<CR>
 nmap <LEADER>ss :mksession<CR>
@@ -277,9 +272,12 @@ noremap <LEADER>bd :%bd\|e#<CR>
 runtime! partials/defx.vim
 runtime! partials/fzf.vim
 runtime! partials/coc.vim
-"runtime! partials/ale.vim
 " gitgutter {{{
 let g:gitgutter_max_signs=1000
+" Sign Column made by solarized color is strange, clear it.
+highlight clear SignColumn
+" fix bg gray issue for gitgutter by adding at colors/solarized.vim at line 658
+"exe "hi! SignColumn"     .s:fmt_none   .s:fg_base0  .s:bg_base02
 " }}}
 " Vim Easy Align {{{
 xmap ga <Plug>(EasyAlign)
@@ -294,11 +292,9 @@ let g:indentLine_color_term=239
 " s{char}{char} to move to {char}{char}
 map s <Plug>(easymotion-overwin-f2)
 " Move to line
-map <LEADER>L <Plug>(easymotion-bd-jk)
 nmap <LEADER>L <Plug>(easymotion-overwin-line)
 "  Move to word
-map  <LEADER>w <Plug>(easymotion-bd-w)
-nmap <Leader>w <Plug>(easymotion-overwin-w)
+nmap <Leader>W <Plug>(easymotion-overwin-w)
 " }}}
 " vim-anzu {{{
 " clean highlight using `:nohl`
@@ -310,18 +306,42 @@ nmap N <Plug>(anzu-N-with-echo)
 nmap <LEADER>f <Plug>CtrlSFPrompt
 nmap <LEADER>F <Plug>CtrlSFCwordPath
 vmap <LEADER>F <Plug>CtrlSFVwordPath
-nmap <LEADER>ft :CtrlSFToggle<CR>
-let g:ctrlsf_auto_close=0
+nmap <LEADER>tf :CtrlSFToggle<CR>
+" <C-J>,<C-K> for next or previous match
+let g:ctrlsf_winsize=56
+let g:ctrlsf_auto_close=1
+let g:ctrlsf_auto_focus={
+  \ 'at':'start'
+  \ }
 " }}}
 
 " airline {{{
 let g:airline#extensions#tabline#enabled=1
-let g:airline#extensions#ale#enabled=1
 let g:airline_theme='solarized'
 let g:airline_solarized_bg='dark'
+let g:airline_powerline_fonts=1
+function! ToggleBG()
+  let s:tbg = &background
+  if s:tbg == "dark"
+    let g:airline_solarized_bg='light'
+    set background=light
+    echom 'NeoVim background is set to light'
+  else
+    let g:airline_solarized_bg='dark'
+    set background=dark
+    echom 'NeoVim background is set to dark'
+  endif
+endfunction
+noremap <silent> <leader>tb :call ToggleBG()<CR>
 " }}}
 " vim-go {{{
-let g:go_def_mapping_enabled = 0
+let g:go_def_mapping_enabled=0
+let g:go_fmt_command = 'goimports'    "Auto import go packages on save
+" }}}
+" accelerated_jk {{{
+nmap j <Plug>(accelerated_jk_gj)
+nmap k <Plug>(accelerated_jk_gk)
+let g:accelerated_jk_acceleration_table=[2,4,7,12,18]
 " }}}
 " === languages === {{{
 " vim
@@ -331,7 +351,6 @@ au BufNewFile,BufRead *.py setlocal tabstop=4 softtabstop=4 shiftwidth=4 textwid
 " sh
 autocmd BufWritePre *.sh call StripTrailingWhitespace()
 " golang
-let g:go_fmt_command = 'goimports'    "Auto import go packages on save
 autocmd Filetype go setlocal tabstop=2 shiftwidth=2 softtabstop=4
 " markdown
 autocmd FileType markdown setlocal wrap matchpairs+=<:>
