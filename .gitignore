@@ -4,6 +4,7 @@
 !/config/nvim
 !/config/nftables.conf
 !/config/shadowsocks.json
+!/config/alacritty
 /config/nvim/*
 !/config/nvim/init.vim
 !/config/nvim/setup_coc_extensions.sh

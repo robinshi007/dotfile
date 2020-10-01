@@ -1,19 +1,21 @@
 [color]
-diff=auto
-status=auto
+  diff=auto
+  status=auto
 [core]
-editor=vim
-quotepath=false
-autocrlf=input
+  editor=vim
+  quotepath=false
+  autocrlf=input
+[pull]
+  rebase=true
 [alias]
-st=status
-ci=commit
-lg=log -p
-lol=log --graph --decorate --pretty=oneline --abbrev-commit --all
+  st=status
+  ci=commit
+  lg=log -p
+  lol=log --graph --decorate --pretty=oneline --abbrev-commit --all
 [user]
-name=Robin Shi
-email=robinshi@outlook.com
-#[http]
-#	proxy = http://127.0.0.1:8118
-#[https]
-#	proxy = http://127.0.0.1:8118
+  name=Robin Shi
+  email=robinshi@outlook.com
+;[http]
+  ;proxy = http://127.0.0.1:8118
+;[https]
+  ;proxy = http://127.0.0.1:8118

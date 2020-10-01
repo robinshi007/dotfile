@@ -255,6 +255,7 @@ vnoremap <LEADER>y "+y   " copy to system clipboard
 nmap <LEADER><LEADER> <C-^>
 nnoremap <silent> <LEADER>ev :e $MYVIMRC<CR>
 nnoremap <silent> <LEADER>sv :source $MYVIMRC\|echom 'NeoVim config reloaded!'<CR>
+nnoremap <silent> <LEADER>ex :e ~/.config/nvim/partials<CR>
 nmap <LEADER>es :sp %%
 nmap <LEADER>l :set list!<CR>
 nmap <LEADER>ss :mksession<CR>

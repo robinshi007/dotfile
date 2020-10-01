@@ -133,7 +133,7 @@ nmap <silent> <LEADER>h :set hlsearch!<CR>
 " <C-w>w   " move to next window
 " <C-w>H   " move left
 " <C-w>L   " move right
-" <C-w>J   " move down 
+" <C-w>J   " move down
 " <C-w>K   " move up
 " <C-w>=   " same height
 " <C-w>+   " adding height
