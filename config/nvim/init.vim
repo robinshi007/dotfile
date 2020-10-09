@@ -266,7 +266,7 @@ nmap <LEADER>hl :set hls!<CR>
 noremap <TAB> :bnext!<CR>
 noremap <S-TAB> :bprev!<CR>
 " close all buffers except this one
-noremap <LEADER>bd :%bd\|e#<CR>
+noremap <LEADER>bd :%bd\|e#\|bd#<CR>
 " }}}
 
 " === plugins === {{{
