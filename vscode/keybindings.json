@@ -1,37 +1,80 @@
-// place your key bindings in this file to override the defaults
+// Place your key bindings in this file to overwrite the defaults
 [
-    {
-        "key": "ctrl+e",
-        "command": "workbench.view.explorer"
-    },
-    {
-        "key": "h",
-        "command": "list.collapse",
-        "when": "explorerviewletvisible && filesexplorerfocus && !inputfocus"
-    },
-    {
-        "key": "l",
-        "command": "list.expand",
-        "when": "explorerviewletvisible && filesexplorerfocus && !inputfocus"
-    },
-    {
-        "key": "j",
-        "command": "list.focusdown",
-        "when": "explorerviewletvisible && filesexplorerfocus && !inputfocus"
-    },
-    {
-        "key": "k",
-        "command": "list.focusup",
-        "when": "explorerviewletvisible && filesexplorerfocus && !inputfocus"
-    },
-    {
-        "key": "o",
-        "command": "list.toggleexpand",
-        "when": "explorerviewletvisible && filesexplorerfocus && !inputfocus"
-    },
-    {
-        "key": "enter",
-        "command": "list.select",
-        "when": "explorerviewletvisible && filesexplorerfocus && !inputfocus"
-    }
+  {
+    "key": "ctrl+e",
+    "command": "workbench.view.explorer",
+    "when": "vim.active && vim.mode != 'Insert'"
+  },
+  {
+    "key": "shift+cmd+e",
+    "command": "-workbench.view.explorer"
+  },
+  {
+    "key": ", t",
+    "command": "workbench.action.toggleSidebarVisibility",
+    "when": "!editorTextFocus"
+  },
+  // windows
+  {
+    "key": "ctrl+h",
+    "command": "workbench.action.focusLeftGroup",
+    "when": "editorTextFocus && vim.active && vim.mode != 'Insert'"
+  },
+  {
+    "key": "ctrl+l",
+    "command": "workbench.action.focusRightGroup",
+    "when": "editorTextFocus && vim.active && vim.mode != 'Insert'"
+  },
+  {
+    "key": "ctrl+k",
+    "command": "workbench.action.focusAboveGroup",
+    "when": "editorTextFocus && vim.active && vim.mode != 'Insert'"
+  },
+  {
+    "key": "ctrl+j",
+    "command": "workbench.action.focusBelowGroup",
+    "when": "editorTextFocus && vim.active && vim.mode != 'Insert'"
+  },
+  // sidebar
+  {
+    "key": "h",
+    "command": "list.collapse",
+    "when": "listFocus && !inputFocus"
+  },
+  {
+    "key": "l",
+    "command": "list.expand",
+    "when": "listFocus && !inputFocus"
+  },
+  {
+    "key": "k",
+    "command": "list.focusUp",
+    "when": "listFocus && !inputFocus"
+  },
+  {
+    "key": "j",
+    "command": "list.focusDown",
+    "when": "listFocus && !inputFocus"
+  },
+  {
+    "key": "cmd+enter",
+    "command": "renameFile",
+    "when": "explorerViewletVisible && filesExplorerFocus"
+  },
+  {
+    "key": "enter",
+    "command": "-renameFile",
+    "when": "explorerViewletVisible && filesExplorerFocus"
+  },
+  {
+    "key": "enter",
+    "command": "list.select",
+    "when": "listFocus && !inputFocus"
+  },
+  // control + p
+  {
+    "key": "ctrl+p",
+    "command": "workbench.action.quickOpen",
+    "when": "vim.active && vim.mode != 'Insert'"
+  }
 ]
