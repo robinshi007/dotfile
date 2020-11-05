@@ -77,6 +77,7 @@ Plug 'cakebaker/scss-syntax.vim'
 Plug 'elzr/vim-json'
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
 Plug 'mxw/vim-jsx'
 Plug 'posva/vim-vue'
 Plug 'jparise/vim-graphql'
@@ -106,6 +107,11 @@ set mousehide                  " hide mouse cursor when typing
 set history=1000               " increase the undo limit
 set backspace=indent,eol,start " allow backspacing over indention and line breaks
 set iskeyword+=-
+set autoread                   " trigger `autoread` when files changes on disk
+autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
+" notification after file change
+autocmd FileChangedShellPost *
+      \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 "}}}
 
 " encodings {{{

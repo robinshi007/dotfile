@@ -5,9 +5,8 @@ augroup vimrc_defx
   autocmd FileType defx call s:defx_mappings()        " Defx mappings
   autocmd VimEnter * call s:setup_defx()
 augroup END
-" nnoremap <silent><C-e> :call <sid>defx_open({ 'split': v:true, 'find_current_file': v:true })<CR>
-nnoremap <silent><C-e> :call <sid>defx_open({ 'split': v:true })<CR>
-let s:default_columns = 'indent:git:icons:filename'
+nnoremap <silent><C-e> :call <sid>defx_open({ 'split': v:true, 'find_current_file': v:true })<CR>
+let s:default_columns = 'git:mark:indent:icons:filename'
 
 function! s:setup_defx() abort
   call defx#custom#option('_', {
@@ -20,8 +19,12 @@ function! s:setup_defx() abort
         \ })
 
   call defx#custom#column('filename', {
-        \ 'min_width': 36,
-        \ 'max_width': 36,
+        \ 'min_width': 38,
+        \ 'max_width': 38,
+        \ })
+  call defx#custom#column('mark', {
+        \ 'readonly_icon': '✗',
+        \ 'selected_icon': '✓',
         \ })
   call defx#custom#column('git', 'indicators', {
         \ 'Modified'  : '✹',
@@ -32,7 +35,6 @@ function! s:setup_defx() abort
         \ 'Deleted'   : '✖',
         \ 'Unknown'   : '?'
         \ })
-
   call s:defx_open({ 'dir': expand('<afile>') })
 endfunction
 
@@ -54,52 +56,44 @@ endfunction
 function! s:defx_open(...) abort
   let l:opts = get(a:, 1, {})
   let l:path = get(l:opts, 'dir', s:get_project_root())
-
-  if !isdirectory(l:path) || &filetype ==? 'defx'
+  if !isdirectory(l:path)
     return
   endif
 
-    let l:args = '-winwidth=36 -direction=topleft'
-
+  let l:args = '-winwidth=38 -direction=topleft'
   if has_key(l:opts, 'split')
     let l:args .= ' -split=vertical'
   endif
-
   if has_key(l:opts, 'find_current_file')
-    if &filetype ==? 'defx'
-      return
-    endif
-    call execute(printf('Defx %s -toggle -focus -search=%s %s', l:args, expand('%:p'), l:path))
+    call execute(printf('Defx -toggle -focus -search=%s %s %s', expand('%:p'), l:args, l:path))
   else
     call execute(printf('Defx -toggle -focus %s %s', l:args, l:path))
   endif
-
-  " return execute("norm!\<C-w>=")
 endfunction
 
 function! s:defx_context_menu() abort
-  let l:actions = ['new_multiple_files', 'rename', 'copy', 'move', 'paste', 'remove']
-  let l:selection = confirm('Action?', "&Add file/directory\n&Rename\n&Copy\n&Move\n&Paste\n&Delete")
+  let l:actions = ['new_file', 'rename', 'copy', 'paste', 'remove_trash']
+  let l:selection = confirm('Action?', "&Add file/directory\n&Rename\n&Copy\n&Paste\n&Delete")
   silent exe 'redraw'
-
   return feedkeys(defx#do_action(l:actions[l:selection - 1]))
 endfunction
 
 function! s:defx_toggle_tree() abort
   if defx#is_directory()
-    return defx#do_action('open_or_close_tree')
+    return defx#do_action('open_tree', 'toggle')
   endif
-  return defx#do_action('drop')
+  return defx#do_action('multi', ['drop', 'quit'])
 endfunction
 
 function! s:defx_mappings() abort
   setlocal number
   nnoremap <silent><buffer>m :call <sid>defx_context_menu()<CR>
   nnoremap <silent><buffer><expr> o <sid>defx_toggle_tree()
-  nnoremap <silent><buffer><expr> O defx#do_action('open_tree_recursive')
+  nnoremap <silent><buffer><expr> O defx#do_action('open_tree', 'recursive')
   nnoremap <silent><buffer><expr> <CR> <sid>defx_toggle_tree()
   nnoremap <silent><buffer><expr> C defx#is_directory() ? defx#do_action('multi', ['open', 'change_vim_cwd']) : 'C'
-  nnoremap <silent><buffer><expr> s defx#do_action('open', 'botright vsplit')
+  nnoremap <silent><buffer><expr> s defx#do_action('multi', [['drop', 'botright split'], 'quit'])
+  nnoremap <silent><buffer><expr> v defx#do_action('multi', [['drop', 'botright vsplit'], 'quit'])
   nnoremap <silent><buffer><expr> R defx#do_action('redraw')
   nnoremap <silent><buffer><expr> U defx#do_action('multi', [['cd', '..'], 'change_vim_cwd'])
   nnoremap <silent><buffer><expr> H defx#do_action('toggle_ignored_files')
