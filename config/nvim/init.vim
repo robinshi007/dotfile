@@ -148,10 +148,11 @@ set smartcase
 
 " folding {{{
 " za zA zr zR zm zM zj zk
-set nofoldenable      " disable folding by default
-set foldmethod=indent " fold method: syntax, indent, marker
+"set nofoldenable      " disable folding by default
+set foldenable         " fold by default
+set foldmethod=marker " fold method: syntax, indent, marker
 set foldlevel=10      " max fold level
-set foldlevelstart=1  " auto fold when opening
+set foldlevelstart=0  " auto fold when opening
 set foldnestmax=3     " only fold up to three nested levels
 "}}}
 

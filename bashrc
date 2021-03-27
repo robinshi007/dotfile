@@ -130,6 +130,14 @@ ips()
 {
   sudo ifconfig | grep "inet " | awk '{ print $2}'
 }
+# test on macos
+port_used(){
+  if [[ -n "$1" ]];then
+    echo $(sudo lsof -nP -iTCP:$1 | grep LISTEN)
+  else
+    echo "please provide the port number"
+  fi
+}
 docker_ip(){
   echo $(ip -4 addr show docker0 | grep -Po 'inet \K[\d.]+')
 }
