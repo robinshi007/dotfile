@@ -6,6 +6,5 @@
 !/config/shadowsocks.json
 !/config/alacritty
 /config/nvim/*
-!/config/nvim/init.vim
-!/config/nvim/setup_coc_extensions.sh
-!/config/nvim/partials/
+!/config/nvim/init.lua
+!/config/nvim/setup_nvim.sh

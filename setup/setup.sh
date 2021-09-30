@@ -3,7 +3,7 @@
 OS_NAME=$(uname -s)
 # === functions
 function is_dir_file(){
-  if [[ -f $1 ]] || [[ -d $1 ]];then
+  if [ -f $1 ] || [ -d $1 ];then
     return 0
   else
     return 1
@@ -19,6 +19,7 @@ function mkfolder(){
 # === setup folders and files
 mkfolder "$HOME/bin"
 mkfolder "$HOME/tmp"
+mkfolder "$HOME/.config"
 [ -d ~/dotfile/vim/autoload ] ||         mkdir -p ~/dotfile/vim/autoload
 [ -d ~/dotfile/config/nvim/autoload ] || mkdir -p ~/dotfile/config/nvim/autoload
 # download plug.vim to autoload path
@@ -35,7 +36,7 @@ if [ $OS_NAME == "Linux" ];then
 elif [ $OS_NAME == "Darwin" ];then
   echo "=> installing macos packages"
   # setup macos
-  # brew install tmux neovim python3 ag reattach-to-user-namespace
+  # brew install tmux neovim python3 rg reattach-to-user-namespace
   # brew cask install iterm2
 fi
 
@@ -48,16 +49,16 @@ FILES=(
 'vim'
 'gitconfig'
 'gitignore'
-'config'
+'config/nvim'
 'tmux.conf'
-'tern-config'
 'eslintrc.json'
 )
 
 # link dotfiles to $HOME
 echo "=> link dotfiles starting"
 for i in ${FILES[@]}; do
-  if $(is_dir_file $i);then
+  echo "Process: $HOME/.$i"
+  if $(is_dir_file "$HOME/dotfile/$i");then
     if [ -L "$HOME/.$i" ];then
       echo "File link exist: $HOME/.$i"
       continue

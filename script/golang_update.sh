@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # version
-VERSION=1.14.1
+VERSION=1.16.2
 OS=linux
 ARCH=amd64
 
