@@ -224,3 +224,4 @@ fi
 #export NO_PROXY=localhost,127.0.0.1,192.168.99.0/24,192.168.39.0/24,192.168.49.0/24,10.96.0.0/12,172.17.0.0/24
 alias kubectl='minikube kubectl --'
 
+. "$HOME/.cargo/env"
