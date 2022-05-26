@@ -7,4 +7,6 @@
 !/config/alacritty
 /config/nvim/*
 !/config/nvim/init.lua
+!/config/nvim/lua
+!/config/nvim/ginit.vim
 !/config/nvim/setup_nvim.sh
