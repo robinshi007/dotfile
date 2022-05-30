@@ -3,6 +3,10 @@
 " go to older in change list: g;
 " go to newer in change list: g,
 " go to older/newer in jump list: ctrl+o/ctrl+i
+"
+" curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+"    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
 
 set nocompatible
 if !exists("g:os")
