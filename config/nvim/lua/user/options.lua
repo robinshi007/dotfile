@@ -81,3 +81,5 @@ vim.o.pumheight = 10
 -- always show tabline
 vim.o.showtabline = 2
 vim.autoread = true
+-- system copy
+vim.api.nvim_set_option("clipboard", "unnamed")

@@ -185,6 +185,7 @@ if [ $OS_NAME == "Darwin" ];then
   ulimit -n 10000  # for limit of file descriptors
 fi
 if [ -d "$HOME/.cargo/bin" ]; then
+    . "$HOME/.cargo/env"
     export PATH="$HOME/.cargo/bin:$PATH"
 fi
 if [[ -d /usr/local/go ]];then
@@ -224,4 +225,3 @@ fi
 #export NO_PROXY=localhost,127.0.0.1,192.168.99.0/24,192.168.39.0/24,192.168.49.0/24,10.96.0.0/12,172.17.0.0/24
 alias kubectl='minikube kubectl --'
 
-. "$HOME/.cargo/env"
