@@ -111,5 +111,6 @@ require('packer').startup(function(use)
   -- lang
   use "b0o/schemastore.nvim"
   use "LunarVim/vim-solidity"
+  use "jparise/vim-graphql"
   use "jose-elias-alvarez/nvim-lsp-ts-utils"
 end)
