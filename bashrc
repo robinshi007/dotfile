@@ -194,10 +194,10 @@ if [[ -d /usr/local/go ]];then
     # go proxy
     export GOPROXY=https://goproxy.cn,https://goproxy.io,direct
 fi
-# if [[ $(type go 2>/dev/null) ]] && [ -d "$HOME/projects/go" ]; then
-#     export GOPATH=$HOME/projects/go
-#     export PATH=$GOPATH/bin:$PATH
-# fi
+ if [[ $(type go 2>/dev/null) ]] && [ -d "$HOME/go" ]; then
+     export GOPATH=$HOME/go
+     export PATH=$GOPATH/bin:$PATH
+ fi
 
 # 3rd party init
 # nvm init
@@ -223,5 +223,5 @@ fi
 #export HTTP_PROXY=http://172.8.0.1:8118
 #export HTTPS_PROXY=https://172.8.0.1:8118
 #export NO_PROXY=localhost,127.0.0.1,192.168.99.0/24,192.168.39.0/24,192.168.49.0/24,10.96.0.0/12,172.17.0.0/24
-alias kubectl='minikube kubectl --'
+# alias kubectl='minikube kubectl --'
 

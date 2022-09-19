@@ -14,6 +14,9 @@ telescope.setup{
         -- e.g. git_{create, delete, ...}_branch for the git_branches picker
         ["<C-h>"] = "which_key"
       }
+    },
+    {
+      file_ignore_patterns = {"node_modules", "__pycache__"}
     }
   },
   pickers = {

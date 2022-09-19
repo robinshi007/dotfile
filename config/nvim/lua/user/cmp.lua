@@ -15,14 +15,20 @@ if not lspkind_status_ok then
   return
 end
 
-require("luasnip.loaders.from_vscode").load()
+require("luasnip.loaders.from_vscode").lazy_load({
+  paths = {
+    vim.fn.stdpath('config') .. '/snippets'
+  }
+})
+
+require("luasnip.loaders.from_vscode").lazy_load()
 
 local check_backspace = function()
   local col = vim.fn.col "." - 1
   return col == 0 or vim.fn.getline("."):sub(col, col):match "%s"
 end
 
-cmp.setup {
+cmp.setup({
   -- 指定 snippet 引擎
   snippet = {
     expand = function(args)
@@ -96,7 +102,7 @@ cmp.setup {
     })
   },
 
-}
+})
 
 -- Use buffer source for `/`.
 cmp.setup.cmdline('/', {
@@ -107,9 +113,7 @@ cmp.setup.cmdline('/', {
 
 -- Use cmdline & path source for ':'.
 cmp.setup.cmdline(':', {
-  sources = cmp.config.sources({
-    { name = 'path' }
-  }, {
+  sources = {
     { name = 'cmdline' }
-  })
+  }
 })

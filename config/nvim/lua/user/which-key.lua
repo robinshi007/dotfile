@@ -4,7 +4,7 @@ if not status_ok then
 end
 
 local mappings = {
-  q = {":q<CR>", "QUit"},
+  q = {":q<CR>", "Quit"},
   Q = {":wq<CR>", "Save & Quit"},
   w = {":w<CR>", "Save"},
   E = {":e ~/.config/nvim/init.vim<CR>" , "Edit config"},

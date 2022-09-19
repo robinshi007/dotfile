@@ -16,6 +16,8 @@ require('packer').startup(function(use)
   -------------------------- plugins -------------------------------------------
   -- surround
   use "ur4ltz/surround.nvim"
+  use "tpope/vim-repeat"
+
 
   -- nvim-coloizer
   use 'norcalli/nvim-colorizer.lua'
@@ -34,6 +36,7 @@ require('packer').startup(function(use)
   use "mg979/vim-visual-multi"
   use "lukas-reineke/indent-blankline.nvim"
   use "RRethy/vim-illuminate"
+  use "Vonr/align.nvim"
   -- treesitter
   --use {
     --'nvim-treesitter/nvim-treesitter',
@@ -53,6 +56,7 @@ require('packer').startup(function(use)
 
   -- lspconfig
   use {'neovim/nvim-lspconfig', 'williamboman/nvim-lsp-installer'}
+  use { 'jose-elias-alvarez/null-ls.nvim' }
   -- nvim-cmp
   use 'hrsh7th/cmp-nvim-lsp' -- { name = nvim_lsp }
   use 'hrsh7th/cmp-buffer'   -- { name = 'buffer' },
@@ -72,15 +76,6 @@ require('packer').startup(function(use)
   -- use 'simrat39/rust-tools.nvim'
   --------------------------- colorscheme ------------------------------------
 
-  -- gruvbox
-  use {
-    "ellisonleao/gruvbox.nvim",
-    requires = {"rktjmp/lush.nvim"}
-  }
-  -- zephyr
-  use 'glepnir/zephyr-nvim'
-  -- nord
-  use 'shaunsingh/nord.nvim'
   -- onedark
   use 'ful1e5/onedark.nvim'
   ------------------------------------
@@ -93,8 +88,9 @@ require('packer').startup(function(use)
   use 'nvim-lua/plenary.nvim'
   use {
     'nvim-telescope/telescope.nvim',
-    requires = {{'nvim-lua/plenary.nvim'}}
+    -- requires = {{'nvim-lua/plenary.nvim'}}
   }
+
 
   -- use {
   --   "folke/trouble.nvim",
