@@ -14,7 +14,7 @@ end
 local mason_lspconfig_config = function()
   local mason_lspconfig = require("mason-lspconfig")
   mason_lspconfig.setup({
-    ensure_installed = { "sumneko_lua", "cssls", "pyright", "tsserver", "solc", "gopls"}
+    ensure_installed = { "sumneko_lua", "cssls", "pyright", "tsserver", "gopls"}
   })
   mason_lspconfig.setup_handlers({
     function (server_name) -- default handler (optional)

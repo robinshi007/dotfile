@@ -18,7 +18,7 @@ return {
         'python',
         'rust',
         'go',
-        'solidity',
+        -- 'solidity',
       },
       -- Install parsers synchronously (only applied to `ensure_installed`)
       sync_install = false,
@@ -28,13 +28,13 @@ return {
       },
     })
     -- *Must* be *S*olidity not solidity
-    require "nvim-treesitter.parsers".get_parser_configs().Solidity = {
-      install_info = {
-        url = "https://github.com/JoranHonig/tree-sitter-solidity",
-        files = {"src/parser.c"},
-        requires_generate_from_grammar = true,
-      },
-      filetype = 'solidity'
-    }
+    -- require "nvim-treesitter.parsers".get_parser_configs().Solidity = {
+    --   install_info = {
+    --     url = "https://github.com/JoranHonig/tree-sitter-solidity",
+    --     files = {"src/parser.c"},
+    --     requires_generate_from_grammar = true,
+    --   },
+    --   filetype = 'solidity'
+    -- }
   end,
 }

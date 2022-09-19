@@ -38,6 +38,7 @@ local plugins = {
   require('plugins/autopairs'),
   require('plugins/comment'),
   require('plugins/align'),
+  require('plugins/visual_multi'),
   require('plugins/escape'),
   require('plugins/blankline'),
   require('plugins/illuminate'),
@@ -45,6 +46,7 @@ local plugins = {
   -- ui
   require('plugins/theme'),
   require('plugins/statusline'),
+  require('plugins/bufferline'),
   require('plugins/tree'),
   require('plugins/telescope'),
   require('plugins/gitsigns'),
@@ -57,6 +59,9 @@ local plugins = {
   require('plugins/null_ls'),
   require('plugins/lspconfig'),
   require('plugins/mason'),
+
+  -- lanuage filetype/syntax/index
+  require("plugins/lang")
 }
 
 local config = require('plugins/packer')
