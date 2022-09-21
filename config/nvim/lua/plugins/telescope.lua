@@ -3,7 +3,14 @@ local M = {
   requires = { {"nvim-lua/plenary.nvim" }}
 }
 M.config = function()
-  require('telescope').setup({})
+  require('telescope').setup({
+    defaults = {
+      file_ignore_patterns = {
+        "node_modules",
+        "__pycache__",
+      }
+    }
+  })
 end
 M.keymaps = {
   {"n", "<C-p>", "<cmd>Telescope find_files<CR>"},

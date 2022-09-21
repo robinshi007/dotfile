@@ -39,6 +39,7 @@ local plugins = {
   require('plugins/comment'),
   require('plugins/align'),
   require('plugins/visual_multi'),
+  require('plugins/spectre'),
   require('plugins/escape'),
   require('plugins/blankline'),
   require('plugins/illuminate'),
