@@ -9,7 +9,7 @@ return {
     'onsails/lspkind-nvim',
   },
   config = function()
-    local cmp = require('cmp')
+    local cmp     = require('cmp')
     local luasnip = require('luasnip')
     local lspkind = require('lspkind')
 
@@ -27,9 +27,9 @@ return {
       },
       sources = {
         { name = 'nvim_lsp' },
-        { name = 'luasnip' },
-        { name = 'path' },
-        { name = 'buffer' },
+        { name = 'luasnip'  },
+        { name = 'path'     },
+        { name = 'buffer'   },
       },
 
       -- Completion settings

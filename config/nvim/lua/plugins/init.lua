@@ -37,7 +37,7 @@ local plugins = {
   require('plugins/surround'),
   require('plugins/autopairs'),
   require('plugins/comment'),
-  require('plugins/align'),
+  -- require('plugins/align'),
   require('plugins/visual_multi'),
   require('plugins/spectre'),
   require('plugins/escape'),
