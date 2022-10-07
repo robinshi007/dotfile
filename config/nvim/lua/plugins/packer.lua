@@ -40,8 +40,8 @@ M.keymap = function(plugins)
     if plugin.group ~= nil then
         -- for grouped plugins
         for _, subplugin in ipairs(plugin.group) do
-          if plugin.keymaps ~= nil then
-            for _, keymap in ipairs(plugin.keymaps) do
+          if subplugin.keymaps ~= nil then
+            for _, keymap in ipairs(subplugin.keymaps) do
               mapset(keymap[1], keymap[2], keymap[3], keymap[4])
             end
           end

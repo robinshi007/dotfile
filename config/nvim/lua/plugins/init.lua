@@ -43,6 +43,7 @@ local plugins = {
   require('plugins/escape'),
   require('plugins/blankline'),
   require('plugins/illuminate'),
+  require('plugins/leap'),
 
   -- ui
   require('plugins/theme'),
@@ -62,7 +63,9 @@ local plugins = {
   require('plugins/mason'),
 
   -- lanuage filetype/syntax/index
-  require("plugins/lang")
+  require("plugins/lang"),
+
+  -- after
 }
 
 local config = require('plugins/packer')

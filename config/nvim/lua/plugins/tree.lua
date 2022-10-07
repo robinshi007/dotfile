@@ -9,7 +9,6 @@ return {
       --   open_on_tab = true,
       view = {
         width         = 32,
-        height        = 30,
         side          = "left",
         mappings = {
           custom_only = true,
