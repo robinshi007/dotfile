@@ -4,15 +4,34 @@ local M = {
 M.config = function()
   local null_ls = require('null-ls')
   local null_ls_utils = require('null-ls.utils')
+  local b = null_ls.builtins
   null_ls.setup({
-    debounce = 200,
+    debug = true,
+    root_dir = null_ls_utils.root_pattern(".git"),
     sources = {
-      null_ls.builtins.formatting.black.with { extra_args = { "--fast" }},
-      null_ls.builtins.formatting.stylua,
-      null_ls.builtins.code_actions.gitsigns,
+      -- js, ts, css, html, json
+      b.formatting.prettier.with { filetypes = {"html", "css", "json", "markdown" }},
+
+      -- python
+      b.formatting.black.with { extra_args = { "--fast" }},
+      -- lua
+      b.formatting.stylua,
+      -- git
+      b.code_actions.gitsigns,
+      --snip
+      b.completion.luasnip,
     },
-    root_dir = null_ls_utils.root_pattern(".git")
+    -- on_attach = function(client)
+    --   if client.resolved_capabilities.document_formatting then
+    --     vim.cmd "autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()"
+    --   end
+    -- end,
   })
 end
+
+M.keymaps = {
+  {"n", "<leader>m", "<cmd>lua vim.lsp.buf.format()<CR>" },
+  {"v", "<leader>m", "<cmd>lua vim.lsp.buf.format()<CR>" },
+}
 
 return M
