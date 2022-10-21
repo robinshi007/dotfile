@@ -18,8 +18,6 @@ M.config = function()
       b.formatting.stylua,
       -- git
       b.code_actions.gitsigns,
-      --snip
-      b.completion.luasnip,
     },
     -- on_attach = function(client)
     --   if client.resolved_capabilities.document_formatting then

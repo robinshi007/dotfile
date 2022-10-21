@@ -17,3 +17,4 @@ require('plugins')
 -- plugin: telescope.nvim
 -- plugin: whichkey.nvim
 -- plugin: luasnip + friendly snippets
+

@@ -27,10 +27,10 @@ return {
     -- Add additional capabilities supported by nvim-cmp
     -- See: https://github.com/neovim/nvim-lspconfig/wiki/Autocompletion
     local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
+    capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
 
     capabilities.textDocument.completion.completionItem.documentationFormat = { 'markdown', 'plaintext' }
-    capabilities.textDocument.completion.completionItem.snippetSupport = true
+    capabilities.textDocument.completion.completionItem.snippetSupport = false
     capabilities.textDocument.completion.completionItem.preselectSupport = true
     capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
     capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
