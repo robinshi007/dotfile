@@ -89,21 +89,7 @@ return {
       buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
     end
 
-    --[[
-    Language servers setup:
-    For language servers list see:
-    https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-    Language server installed:
-    Bash          -> bashls
-    Python        -> pyright
-    C-C++         -> clangd
-    HTML/CSS/JSON -> vscode-html-languageserver
-    JavaScript/TypeScript -> tsserver
-    --]]
-
     -- Define `root_dir` when needed
-    -- See: https://github.com/neovim/nvim-lspconfig/issues/320
-    -- This is a workaround, maybe not work with some servers.
     local root_dir = function()
       return vim.fn.getcwd()
     end
@@ -111,7 +97,7 @@ return {
     -- Use a loop to conveniently call 'setup' on multiple servers and
     -- map buffer local keybindings when the language server attaches.
     -- Add your language server below:
-    local servers = { 'sumneko_lua', 'pyright', 'jsonls', 'cssls', 'tsserver', 'gopls' }
+    local servers = { 'sumneko_lua', 'pyright', 'jsonls', 'cssls', 'tsserver', 'gopls', 'rust_analyzer', 'solidity_ls' }
 
     -- Call setup
     for _, lsp in ipairs(servers) do

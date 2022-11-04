@@ -14,14 +14,14 @@ end
 local mason_lspconfig_config = function()
   local mason_lspconfig = require("mason-lspconfig")
   mason_lspconfig.setup({
-    ensure_installed = { "sumneko_lua", "cssls", "pyright", "tsserver", "gopls"}
+    ensure_installed = { "sumneko_lua", "cssls", "pyright", "tsserver", "gopls", "rust_analyzer", "solidity_ls"}
   })
   mason_lspconfig.setup_handlers({
     function (server_name) -- default handler (optional)
       require("lspconfig")[server_name].setup({})
     end,
     ["rust_analyzer"] = function()
-      require("rust-tools").setup {}
+      require("rust-tools").setup({})
     end
   })
 end
