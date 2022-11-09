@@ -3,8 +3,7 @@
 /config/*
 !/config/nvim
 !/config/nftables.conf
-!/config/shadowsocks.json
-!/config/alacritty
+!/config/v2ray.config.json
 /config/nvim/*
 !/config/nvim/init.lua
 !/config/nvim/lua
