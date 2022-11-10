@@ -111,6 +111,13 @@ function prompt_git() {
     echo -ne "($output)"
   fi
 }
+function prompt_python_venv() {
+  if [ -z "$VIRTUAL_ENV" ];then
+    echo -ne ""
+  else
+    echo -ne "<`basename \"$VIRTUAL_ENV\"`>"
+  fi
+}
 function set_bash_prompt()
 {
   local exit_status="$?"
@@ -118,6 +125,7 @@ function set_bash_prompt()
     PS1+="${style_reset}[${style_user}\u"
     PS1+="${style_char}: "
     PS1+="${style_path}\w${style_reset}]"
+    PS1+="${style_smily_alt}$(prompt_python_venv)${style_reset}" # python venv
     PS1+="${style_branch}$(prompt_git)${style_reset}" # Git details
     PS1+="$(prompt_smily $exit_status)"
     PS1+="${style_char}\$${style_reset}"
