@@ -25,3 +25,8 @@ echo "${red}brew clean up ...${reset}."
 (set -x; brew cleanup;)
 echo "${red}brew clean up done.${reset}."
 
+# brew install coreutils -- for gdircolor
+# brew install iterm2
+# brew install stats
+# brew tap homebrew/cask-fonts && brew install --cask font-caskaydia-cove-nerd-font
+# brew tap homebrew/cask-fonts && brew install --cask font-iosevka-nerd-font
