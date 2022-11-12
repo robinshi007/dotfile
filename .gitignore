@@ -1,12 +1,1 @@
 /vim/
-!/config/
-/config/*
-!/config/nvim
-!/config/nftables.conf
-!/config/v2ray.config.json
-/config/nvim/*
-!/config/nvim/init.lua
-!/config/nvim/lua
-!/config/nvim/snippets
-!/config/nvim/ginit.vim
-!/config/nvim/setup_nvim.sh
