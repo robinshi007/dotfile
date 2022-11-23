@@ -62,4 +62,13 @@ if status is-interactive
   set --universal --export LC_ALL en_US.utf-8
   set --universal --export TERM xterm-256color
 
+  # conda
+  [ -d ~/miniconda3/bin ]; and fish_add_path ~/miniconda3/bin
+
 end
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+eval /Users/robin/miniconda3/bin/conda "shell.fish" "hook" $argv | source
+# <<< conda initialize <<<
+

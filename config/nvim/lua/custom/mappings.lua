@@ -1,9 +1,29 @@
 local M = {}
 
 M.general = {
-  n = {
+  n = {},
+}
 
-  }
+M.lspconfig = {
+  plugin = true,
+
+  v = {
+    ["="] = {
+      function()
+        vim.lsp.buf.format()
+      end,
+      "format selected",
+    },
+  },
+
+  x = {
+    ["="] = {
+      function()
+        vim.lsp.buf.format()
+      end,
+      "format selected in v-line mode",
+    },
+  },
 }
 
 M.nvimtree = {
@@ -11,7 +31,7 @@ M.nvimtree = {
 
   n = {
     -- toggle
-    ["<C-e>"] = { "<cmd> NvimTreeToggle <CR>", "toggle nvimtree" },
+    ["<C-e>"] = { "<cmd> NvimTreeToggle<CR>", "toggle nvimtree" },
   },
 }
 
