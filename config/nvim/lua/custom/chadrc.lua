@@ -1,3 +1,5 @@
+require "custom.autocmd"
+
 local M = {}
 
 M.plugins = require "custom.plugins"
