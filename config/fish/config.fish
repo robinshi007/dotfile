@@ -47,14 +47,20 @@ if status is-interactive
   [ -d /opt/homebrew/bin ]; and fish_add_path /opt/homebrew/bin
 
   # alias
-  alias ll 'exa -l'
-  alias la 'exa -a'
-  alias lla 'exa -al'
   alias gcp '/opt/homebrew/bin/gcp'
   alias .. 'cd ..'
   alias ... 'cd ../..'
   alias md 'mkdir -p'
   alias cls 'clear'
+
+  if type -q exa
+    alias ll 'exa -l'
+    alias la 'exa -a'
+    alias lla 'exa -al'
+  end
+  if type -q bat
+    alias bat 'bat --theme="Solarized (dark)"'
+  end
 
   # global env
   set --universal --export EDITOR vim
@@ -64,11 +70,12 @@ if status is-interactive
 
   # conda
   [ -d ~/miniconda3/bin ]; and fish_add_path ~/miniconda3/bin
-
+  #
+  [ -d ~/.local/bin ]; and fish_add_path ~/.local/bin
 end
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-eval /Users/robin/miniconda3/bin/conda "shell.fish" "hook" $argv | source
+# eval /Users/robin/miniconda3/bin/conda "shell.fish" "hook" $argv | source
 # <<< conda initialize <<<
 
