@@ -62,6 +62,7 @@ M.nvimtree = {
         { key = "Y", action = "copy_path" },
         { key = "gy", action = "copy_absolute_path" },
         { key = "H", action = "toggle_dotfiles" },
+        { key = "I", action = "toggle_git_ignored" },
         { key = "q", action = "close" },
         { key = "E", action = "expand_all" },
         { key = "W", action = "collapse_all" },

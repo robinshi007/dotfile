@@ -25,9 +25,9 @@ if status is-interactive
   end
 
   # git
-  function gcp
-    eval command git checkout HEAD~1
-  end
+  # function gcp
+  #  eval command git checkout HEAD~1
+  # end
 
   function gdl
     eval command git diff HEAD~1..HEAD
