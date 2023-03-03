@@ -1,14 +1,12 @@
 {
   "log": {
-    "access": "",
-    "error": "",
     "loglevel": "warning"
   },
   "inbounds": [
     {
       "tag": "socks",
       "port": 1080,
-      "listen": "0.0.0.0",
+      "listen": "127.0.0.1",
       "protocol": "socks",
       "sniffing": {
         "enabled": true,
@@ -26,7 +24,7 @@
     {
       "tag": "http",
       "port": 1081,
-      "listen": "0.0.0.0",
+      "listen": "127.0.0.1",
       "protocol": "http",
       "sniffing": {
         "enabled": true,
@@ -48,11 +46,11 @@
       "settings": {
         "vnext": [
           {
-            "address": "",
+            "address": "<domain_name>",
             "port": 443,
             "users": [
               {
-                "id": "<>",
+                "id": "<sid>",
                 "alterId": 0,
                 "email": "t@t.tt",
                 "security": "auto",
@@ -68,12 +66,12 @@
         "security": "tls",
         "tlsSettings": {
           "allowInsecure": false,
-          "serverName": ""
+          "serverName": "<domain_name>"
         },
         "wsSettings": {
-          "path": "/v2ray",
+          "path": "<ws_path>",
           "headers": {
-            "Host": ""
+            "Host": "<domain_name>"
           }
         }
       },

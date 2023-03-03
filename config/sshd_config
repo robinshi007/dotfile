@@ -1,0 +1,6 @@
+Port 2222
+PermitRootLogin no
+PermitEmptyPasswords no
+PasswordAuthentication yes
+AllowUsers <username>
+ClientAliveInterval 900
