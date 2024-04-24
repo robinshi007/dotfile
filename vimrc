@@ -7,7 +7,6 @@
 " curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 "    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-
 set nocompatible
 if !exists("g:os")
   if has('win32') || has('win64')
@@ -22,6 +21,14 @@ if g:os == "Windows"
 else
   let $VIMHOME=$HOME."/.vim"
 endif
+
+" download plug.vim if not exist
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+
 
 call plug#begin($VIMHOME.'/plugged')
 Plug 'tpope/vim-repeat'
@@ -99,12 +106,17 @@ if has('gui_running')
 endif
 
 " directory
-set noswapfile
-set nobackup
-"set directory=$VIMHOME/tmp//
-"set nobackupdir=$VIMHOME/tmp//
-"set undodir=$VIMHOME/tmp//
-"set viewdir=$VIMHOME/tmp//
+"set noswapfile
+"set nobackup
+let tmp_dir = $VIMHOME."/tmp"
+if !isdirectory(tmp_dir)
+  call mkdir(tmp_dir, "p")
+endif
+set directory=$VIMHOME/tmp//
+set backupdir=$VIMHOME/tmp//
+set undodir=$VIMHOME/tmp//
+set viewdir=$VIMHOME/tmp//
+set hidden
 
 " autogroup
 augroup javascript
