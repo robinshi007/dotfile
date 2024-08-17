@@ -111,13 +111,6 @@ function prompt_git() {
     echo -ne "($output)"
   fi
 }
-function prompt_python_venv() {
-  if [ -z "$VIRTUAL_ENV" ];then
-    echo -ne ""
-  else
-    echo -ne "<`basename \"$VIRTUAL_ENV\"`>"
-  fi
-}
 function set_bash_prompt()
 {
   local exit_status="$?"
@@ -125,7 +118,6 @@ function set_bash_prompt()
     PS1+="${style_reset}[${style_user}\u"
     PS1+="${style_char}: "
     PS1+="${style_path}\w${style_reset}]"
-    PS1+="${style_smily_alt}$(prompt_python_venv)${style_reset}" # python venv
     PS1+="${style_branch}$(prompt_git)${style_reset}" # Git details
     PS1+="$(prompt_smily $exit_status)"
     PS1+="${style_char}\$${style_reset}"
@@ -192,22 +184,31 @@ if [ $OS_NAME == "Darwin" ];then
   export PATH="$HOME/Library/Python/3.7/bin":$PATH
   ulimit -n 10000  # for limit of file descriptors
 fi
+
+# pyenv
+if [ -d "$HOME/.pyenv" ]; then
+  export PYENV_ROOT="$HOME/.pyenv"
+  export PATH="$PYENV_ROOT/bin:$PATH"
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+fi
+
 if [ -d "$HOME/.cargo/bin" ]; then
     . "$HOME/.cargo/env"
     export PATH="$HOME/.cargo/bin:$PATH"
 fi
+
 if [[ -d /usr/local/go ]];then
     export GOROOT=/usr/local/go
     export PATH=$GOROOT/bin:$PATH
     # go proxy
     export GOPROXY=https://goproxy.cn,https://goproxy.io,direct
 fi
-# if [[ $(type go 2>/dev/null) ]] && [ -d "$HOME/projects/go" ]; then
-#     export GOPATH=$HOME/projects/go
-#     export PATH=$GOPATH/bin:$PATH
-# fi
+ if [[ $(type go 2>/dev/null) ]] && [ -d "$HOME/go" ]; then
+     export GOPATH=$HOME/go
+     export PATH=$GOPATH/bin:$PATH
+ fi
 
-# 3rd party init
 # nvm init
 if [[ -d "$HOME/.nvm" ]]; then
   export NVM_DIR="$HOME/.nvm"
@@ -217,6 +218,11 @@ fi
 
 if [ $OS_NAME == "Darwin" ];then
   alias free="top -l 1 -s 0 | awk ' /Processes/ || /PhysMem/ || /Load Avg/{print}'"
+fi
+
+# 3rd tools
+if [[ -d "/usr/lib/rabbitmq/bin" ]];then
+    export PATH=/usr/lib/rabbitmq/bin:$PATH
 fi
 
 # local custom
@@ -231,5 +237,5 @@ fi
 #export HTTP_PROXY=http://172.8.0.1:8118
 #export HTTPS_PROXY=https://172.8.0.1:8118
 #export NO_PROXY=localhost,127.0.0.1,192.168.99.0/24,192.168.39.0/24,192.168.49.0/24,10.96.0.0/12,172.17.0.0/24
-alias kubectl='minikube kubectl --'
+# alias kubectl='minikube kubectl --'
 

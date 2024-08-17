@@ -1,20 +1,33 @@
--- refer: NvChad/NvChad
--- refer: brainfucksec/neovim-lua
--- refer: raddari/init.nvim
--- refer: gitee.com/fldpmpang/Neovim_config
+-- Install lazy.nvim
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+	vim.fn.system({
+		"git",
+		"clone",
+		"--filter=blob:none",
+		"https://github.com/folke/lazy.nvim.git",
+		"--branch=stable",
+		lazypath,
+	})
+end
+vim.opt.rtp:prepend(lazypath)
 
--- [[ Neovim init file ]]
+-- load options
+require("custom.options")
 
--- import lua modules
+-- Configure lszy.nvim
+require("lazy").setup({
+	lazy = false,
+	import = "kickstart.plugins",
+}, {
+	import = "custom.plugins",
+}, require("custom.configs.lazy"))
 
-require('core/option')
-require('core/autocmd')
-require('core/keymap')
-require('plugins')
+-- load autocmd and keymaps
+vim.schedule(function()
+	require("custom.autocmds")
+	require("custom.keymaps")
+end)
 
--- todos:
--- plugin: bufferline.nvim
--- plugin: telescope.nvim
--- plugin: whichkey.nvim
--- plugin: luasnip + friendly snippets
-
+-- Lazy Keymap
+vim.keymap.set("n", "<leader>zz", "<cmd>:Lazy<cr>", { desc = "Plugin Manager" })
