@@ -85,7 +85,7 @@ UNHAPPY_CHAR=":("
 
 style_reset="\[${RESET}\]"
 style_user="\[${RESET}${ORANGE}\]"
-style_host="\[${RESET}${YELLOW}\]"
+style_host="\[${RESET}${MAGENTA}\]"
 style_path="\[${RESET}${GREEN}\]"
 style_char="\[${RESET}\]"
 style_branch="\[${CYAN}\]"
@@ -116,6 +116,7 @@ function set_bash_prompt()
   local exit_status="$?"
     PS1=""
     PS1+="${style_reset}[${style_user}\u"
+    PS1+="${style_reset}@${style_host}\h"
     PS1+="${style_char}: "
     PS1+="${style_path}\w${style_reset}]"
     PS1+="${style_branch}$(prompt_git)${style_reset}" # Git details
@@ -170,6 +171,9 @@ function gll(){
   git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 }
 # == PATH
+if [ -d "/usr/bin" ]; then
+  export PATH="/usr/sbin:$PATH"
+fi
 if [ -d "$HOME/bin" ]; then
     export PATH="$HOME/bin:$PATH"
 fi
@@ -205,6 +209,14 @@ if [[ -d "$HOME/.nvm" ]]; then
   export NVM_DIR="$HOME/.nvm"
   [[ -s "$NVM_DIR/nvm.sh" ]] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
   [[ -s "$NVM_DIR/bash_completion" ]] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+fi
+# pyenv
+if [[ -d "$HOME/.pyenv" ]]; then
+  export PYENV_ROOT="$HOME/.pyenv"
+  [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+  eval "$(pyenv init - bash)"
+  # Load pyenv-virtualenv automatically
+  eval "$(pyenv virtualenv-init -)"
 fi
 
 if [ $OS_NAME == "Darwin" ];then
